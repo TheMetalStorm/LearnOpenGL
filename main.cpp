@@ -9,11 +9,22 @@ void error_callback(int error, const char* description)
 {
 	fprintf(stderr, "Error: %s\n", description);
 }
+float mixFactor = .5;
 
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GLFW_TRUE);
+	if (key == GLFW_KEY_UP && action == GLFW_PRESS){
+		float newVal = mixFactor + .1f;
+		mixFactor = fmin(1.0, newVal);
+	}
+	
+	if (key == GLFW_KEY_DOWN && action == GLFW_PRESS) {
+		float newVal = mixFactor - .1f;
+		mixFactor = fmax(0.0, newVal);
+	}
+
 }
 
 
@@ -42,10 +53,10 @@ int main() {
 	
 	float vertices[] = {
 		// positions          // colors           // texture coords
-		 0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
-		 0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
+		 0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   2.0f, 2.0f,   // top right
+		 0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   2.0f, 0.0f,   // bottom right
 		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
-		-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
+		-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 2.0f    // top left 
 	};
 
 	unsigned int indices[] = {
@@ -84,20 +95,28 @@ int main() {
 	//unbind vertex array
 	glBindVertexArray(0);
 
+	
 	Shader shader = Shader("./Shader/Texture.vert", "./Shader/Texture.frag");
 	shader.use();
+	shader.setInt("texture1", 0); // or with shader class
+	shader.setInt("texture2", 1); // or with shader class
 
 
-
-	unsigned int texture;
+	unsigned int texture, texture2;
 	glGenTextures(1, &texture);
+	glGenTextures(1, &texture2);
+	glActiveTexture(GL_TEXTURE0); // activate the texture unit first before binding texture
 	glBindTexture(GL_TEXTURE_2D, texture);
-
+	
 	// set the texture wrapping/filtering options (on the currently bound texture object)
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+
+
+
 
 	int width, height, nrChannels;
 	unsigned char* data = stbi_load("./Ressources/container.jpg", &width, &height, &nrChannels, 0);
@@ -109,7 +128,35 @@ int main() {
 		std::cout << "Failed to load texture" << std::endl;
 	}
 
+	glActiveTexture(GL_TEXTURE1); // activate the texture unit first before binding texture
+	glBindTexture(GL_TEXTURE_2D, texture2);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	
+	stbi_set_flip_vertically_on_load(true);
+
+	
+	int width2, height2, nrChannels2;
+	unsigned char* data2 = stbi_load("./Ressources/awesomeface.png", &width2, &height2, &nrChannels2, 0);
+	if (data2)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width2, height2, 0, GL_RGBA, GL_UNSIGNED_BYTE, data2);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else {
+		std::cout << "Failed to load texture awesome" << std::endl;
+	}
+
+
+
 	stbi_image_free(data);
+	stbi_image_free(data2);
+
+
+	
 
 
 	while (!glfwWindowShouldClose(window))
@@ -117,7 +164,14 @@ int main() {
 		glClearColor(.3f, 0.6f, .6f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
+		shader.setFloat("mixFactor", mixFactor); // or with shader class
+
+		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texture);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, texture2);
+
+
 		glBindVertexArray(VAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
