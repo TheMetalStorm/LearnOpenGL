@@ -1,9 +1,12 @@
 #include <iostream>
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include<glad/glad.h>
 #include<GLFW/glfw3.h>
+#include "stb_image.h"
 
 #include "Shader.h"
-#include "stb_image.h"
 
 void error_callback(int error, const char* description)
 {
@@ -116,8 +119,6 @@ int main() {
 
 
 
-
-
 	int width, height, nrChannels;
 	unsigned char* data = stbi_load("./Ressources/container.jpg", &width, &height, &nrChannels, 0);
 	if (data) {
@@ -158,13 +159,23 @@ int main() {
 
 	
 
+	//trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
+	//trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
+
+
 
 	while (!glfwWindowShouldClose(window))
 	{
 		glClearColor(.3f, 0.6f, .6f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
+		glm::mat4 trans = glm::mat4(1.0f);
+		trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
+		trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0, 0.0, 1.0));
+
+
 		shader.setFloat("mixFactor", mixFactor); // or with shader class
+		shader.setMat4("transform", trans); // or with shader class
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texture);
@@ -173,6 +184,14 @@ int main() {
 
 
 		glBindVertexArray(VAO);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+		trans = glm::mat4(1.0f);
+		trans = glm::translate(trans, glm::vec3(-0.5f, 0.5f, 0.0f));
+		trans = glm::scale(trans, glm::vec3(abs(sin(glfwGetTime())), abs(sin(glfwGetTime())), 0.0f));
+
+		shader.setMat4("transform", trans); // or with shader class
+
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 
