@@ -2,6 +2,8 @@
 #include<glad/glad.h>
 #include<GLFW/glfw3.h>
 
+#include "Shader.h"
+
 void error_callback(int error, const char* description)
 {
 	fprintf(stderr, "Error: %s\n", description);
@@ -13,47 +15,8 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 		glfwSetWindowShouldClose(window, GLFW_TRUE);
 }
 
-const char* vertexShaderSource = 
-	"#version 330 core\n"
-	"layout (location = 0) in vec3 aPos;\n" // input of shader from vbo, different for every Vert
-	"layout (location = 1) in vec3 aColor;\n" // input of shader from vbo, different for every Vert
-	"out vec3 vertexColor;\n" // output of shader
-	"void main()\n"
-	"{\n"
-	"   vertexColor = aColor;\n"
-	"   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-	"}\0";
-
-const char* fragmentShaderSource= 
-	"#version 330 core\n"
-	"out vec4 FragColor;\n"
-	"in vec3 vertexColor;\n" // input of shader 
-	"void main()\n"
-	"{\n"
-	"   FragColor = vec4(vertexColor, 1.0);\n"
-	"}\0";
 
 
-unsigned int createFragShader(const char* shaderSource) {
-	unsigned int  fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, &shaderSource, NULL);
-	glCompileShader(fragmentShader);
-	if (!fragmentShader) {
-		std::cout << "Failed to create fragment shader" << std::endl;
-		exit(EXIT_FAILURE);
-	}	return fragmentShader;
-}
-
-unsigned int createVertShader(const char* shaderSource) {
-	unsigned int  vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader, 1, &shaderSource, NULL);
-	glCompileShader(vertexShader);
-	if(!vertexShader) {
-		std::cout << "Failed to create vertex shader" << std::endl;
-		exit(EXIT_FAILURE);
-	}
-	return vertexShader;
-}
 
 int main() {
 
@@ -93,23 +56,10 @@ int main() {
 	glGenBuffers(1, &VBO);
 
 
-	//Shader setup
-	unsigned int vertexShader = createVertShader(vertexShaderSource);
-	unsigned int fragmentShader = createFragShader(fragmentShaderSource);
-	
 
-	unsigned int shaderProgram;
-	shaderProgram = glCreateProgram();
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
-	glLinkProgram(shaderProgram);
-	if (!shaderProgram) {
-		std::cout << "Failed to create shader Program" << std::endl;
-		exit(EXIT_FAILURE);
-	}
 
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
+
+
 
 	//Bind VAO and specify vertex attributes
 	glBindVertexArray(VAO);
@@ -128,15 +78,18 @@ int main() {
 
 	//unbind vertex array
 	glBindVertexArray(0);
-	
+
+	Shader shader = Shader("D:/Dev/OpenGL/OpenGL/Shader/Chapter2.vert", "D:/Dev/OpenGL/OpenGL/Shader/Chapter2.frag");
+	shader.use();
+	shader.setFloat4("ourColor", 1.0f, 1.0f, 0.0f, 1.0f);
+
 
 	while (!glfwWindowShouldClose(window))
 	{
 		glClearColor(.3f, 0.6f, .6f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		glUseProgram(shaderProgram);
-		
+
 		glBindVertexArray(VAO); //explicitly bind the VAO
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 
@@ -149,7 +102,7 @@ int main() {
 	glBindVertexArray(0);
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
-	glDeleteProgram(shaderProgram);
+
 
 	glfwDestroyWindow(window);
 	glfwTerminate();
