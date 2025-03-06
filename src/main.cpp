@@ -2,9 +2,13 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include<glad/glad.h>
-#include<GLFW/glfw3.h>
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 #include "stb_image.h"
+
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
 
 #include "Shader.h"
 #include "Camera.h"
@@ -21,8 +25,14 @@ bool firstMouse = true;
 float deltaTime = 0.0f;	// Time between current frame and last frame
 float lastFrame = 0.0f; // Time of last frame
 
+glm::vec3 ogLightPos(0.0f, 5.0f, 0.0f);
+glm::vec3 lightPos = ogLightPos;
+float lightColor[3] = { 1.0f, 1.0f, 1.0f };
+float specularStrength = 0.5f;
+float ambientStrength = 0.1f;
 
-glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
+float lightFlyRadius = 4.0f;
+bool showCursor = false;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
@@ -42,6 +52,9 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 		glfwSetWindowShouldClose(window, GLFW_TRUE);
 
 	camera.moveFast = (key == GLFW_KEY_LEFT_SHIFT && action == GLFW_REPEAT);
+
+	if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS)
+		showCursor = !showCursor;
 
 
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
@@ -112,7 +125,13 @@ int main(int argc, char * argv[]) {
 	glfwSetScrollCallback(window, scroll_callback);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-
+	//Init ImGui
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	ImGui::StyleColorsDark();
+	ImGui_ImplGlfw_InitForOpenGL(window, true);
+	ImGui_ImplOpenGL3_Init("#version 330");
 	//v, t, n
 	float vertices[] = {
 	-0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 0.0f,  0.0f, -1.0f,
@@ -221,8 +240,7 @@ int main(int argc, char * argv[]) {
 	Shader lightingShader = Shader("Shader/Lighting.vert", "Shader/Lighting.frag");
 
 	lightingShader.use();
-	lightingShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
-	lightingShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("objectColor", 1.0f, 1.0f, 1.0f);
 
 	
 	unsigned int texture;
@@ -255,13 +273,25 @@ int main(int argc, char * argv[]) {
 
 
 	while (!glfwWindowShouldClose(window))
-	{
+	{	
+		if (showCursor) {
+			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		}
+		else {
+			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		}
+
+		
 		glClearColor(.3f, 0.6f, .6f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 
 		float currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
+
+		lightPos.x = ogLightPos.x + cos(glfwGetTime()) * lightFlyRadius;
+		lightPos.z = ogLightPos.z + sin(glfwGetTime()) * lightFlyRadius;
 
 		lightingShader.use();
 
@@ -277,7 +307,9 @@ int main(int argc, char * argv[]) {
 		lightingShader.setMat4("view", view);
 		lightingShader.setVec3("lightPos", lightPos);
 		lightingShader.setVec3("viewPos", camera.Position);
-
+		lightingShader.setFloat("specularStrength", specularStrength);
+		lightingShader.setFloat("ambientStrength", ambientStrength);
+		lightingShader.setVec3("lightColor", lightColor[0], lightColor[1], lightColor[2]);
 
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
@@ -291,20 +323,45 @@ int main(int argc, char * argv[]) {
 		lightCubeShader.setMat4("model", model);
 		lightCubeShader.setMat4("projection", projection);
 		lightCubeShader.setMat4("view", view);
+
+		lightCubeShader.setVec3("lightColor", lightColor[0], lightColor[1], lightColor[2]);
+
 		glBindVertexArray(lightVAO);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
 
+		//ImGui setup
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+
+		//ImGui window
+		ImGui::Begin("Light Controls");
+			ImGui::SliderFloat("Specular Light Strenght", &specularStrength, 0.0f, 1.0f);
+			ImGui::SliderFloat("Ambient Light Strenght", &ambientStrength, 0.0f, 1.0f);
+			ImGui::ColorPicker3("Ambient Light Strenght", lightColor);
+		ImGui::End();
+
+		//ImGui draw
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
 		glfwSwapBuffers(window);
 		glfwPollEvents();
+
+
 	}
 
 	//Cleanup
+	
+
 	glBindVertexArray(0);
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
 
-
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
 	glfwDestroyWindow(window);
 	glfwTerminate();
 	exit(EXIT_SUCCESS);
