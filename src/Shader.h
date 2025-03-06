@@ -78,7 +78,7 @@ public:
 		}
 		catch (std::ifstream::failure e)
 		{
-			std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
+			std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ, either " << vertexPath << " or " << fragmentPath << std::endl;
 		}
 
 		const char* vShaderCode = vertexCode.c_str();
@@ -124,10 +124,20 @@ public:
 	{
 		glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
 	}
-	void setFloat4(const std::string& name, float v1, float v2, float v3, float v4) const
+	void setVec4(const std::string& name, float v1, float v2, float v3, float v4) const
 	{
 		glUniform4f(glGetUniformLocation(ID, name.c_str()), v1, v2, v3, v4);
 	}
+
+	void setVec3(const std::string& name, float v1, float v2, float v3) const
+	{
+		glUniform3f(glGetUniformLocation(ID, name.c_str()), v1, v2, v3);
+	}
+	void setVec3(const std::string& name, glm::vec3 vec) const
+	{
+		glUniform3fv(glGetUniformLocation(ID, name.c_str()), 1, glm::value_ptr(vec));
+	}
+
 	void setMat4(const std::string& name, glm::mat4 matrix) const
 	{
 		glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, glm::value_ptr(matrix));
