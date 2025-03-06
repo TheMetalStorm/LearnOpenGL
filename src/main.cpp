@@ -32,7 +32,7 @@ float specularStrength = 0.5f;
 float ambientStrength = 0.1f;
 
 float lightFlyRadius = 4.0f;
-bool showCursor = false;
+bool DEBUG = false;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
@@ -51,11 +51,12 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GLFW_TRUE);
 
-	camera.moveFast = (key == GLFW_KEY_LEFT_SHIFT && action == GLFW_REPEAT);
-
 	if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS)
-		showCursor = !showCursor;
+		DEBUG = !DEBUG;
 
+	if (DEBUG) return;
+
+	camera.moveFast = (key == GLFW_KEY_LEFT_SHIFT && action == GLFW_REPEAT);
 
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		camera.ProcessKeyboard(FORWARD, deltaTime);
@@ -65,11 +66,15 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 		camera.ProcessKeyboard(LEFT, deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		camera.ProcessKeyboard(RIGHT, deltaTime);
+	
+	
 
 
 }
 
 static void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
+	if (DEBUG) return;
+
 	if (firstMouse) // initially set to true
 	{
 		lastX = xpos;
@@ -78,15 +83,17 @@ static void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
 	}
 	float xoffset = xpos - lastX;
 	float yoffset = lastY - ypos; // reversed since y-coordinates range from bottom to top
-
 	lastX = xpos;
 	lastY = ypos;
 
 	camera.ProcessMouseMovement(xoffset, yoffset);
 
+	
 }
 
 static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
+	if (DEBUG) return;
+
 	camera.ProcessMouseScroll(yoffset);
 }
 
@@ -274,7 +281,7 @@ int main(int argc, char * argv[]) {
 
 	while (!glfwWindowShouldClose(window))
 	{	
-		if (showCursor) {
+		if (DEBUG) {
 			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 		}
 		else {
@@ -289,6 +296,7 @@ int main(int argc, char * argv[]) {
 		float currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
+
 
 		lightPos.x = ogLightPos.x + cos(glfwGetTime()) * lightFlyRadius;
 		lightPos.z = ogLightPos.z + sin(glfwGetTime()) * lightFlyRadius;
@@ -339,7 +347,7 @@ int main(int argc, char * argv[]) {
 		ImGui::Begin("Light Controls");
 			ImGui::SliderFloat("Specular Light Strenght", &specularStrength, 0.0f, 1.0f);
 			ImGui::SliderFloat("Ambient Light Strenght", &ambientStrength, 0.0f, 1.0f);
-			ImGui::ColorPicker3("Ambient Light Strenght", lightColor);
+			ImGui::ColorEdit3("Light Color", lightColor);
 		ImGui::End();
 
 		//ImGui draw
