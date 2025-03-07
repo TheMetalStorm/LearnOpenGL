@@ -27,9 +27,16 @@ float lastFrame = 0.0f; // Time of last frame
 
 glm::vec3 ogLightPos(0.0f, 5.0f, 0.0f);
 glm::vec3 lightPos = ogLightPos;
-float lightColor[3] = { 1.0f, 1.0f, 1.0f };
-float specularStrength = 0.5f;
-float ambientStrength = 0.1f;
+float lightSpecular[3] = { 1.0f, 1.0f, 1.0f };
+float lightAmbient[3] = { 0.2f, 0.2f, 0.2f };
+float lightDiffuse[3] = { 0.5f, 0.5f, 0.5f };
+
+float specular[3] = { 0.5f, 0.5f, 0.5f };
+float ambient[3] = { 1.0f, 0.5f, 0.31f };
+float diffuse[3] = { 1.0f, 0.5f, 0.31f };
+float shininess = 32.0f;
+
+bool showTexture = true;
 
 float lightFlyRadius = 4.0f;
 bool DEBUG = false;
@@ -313,11 +320,18 @@ int main(int argc, char * argv[]) {
 		lightingShader.setMat4("model", model);
 		lightingShader.setMat4("projection", projection);
 		lightingShader.setMat4("view", view);
-		lightingShader.setVec3("lightPos", lightPos);
 		lightingShader.setVec3("viewPos", camera.Position);
-		lightingShader.setFloat("specularStrength", specularStrength);
-		lightingShader.setFloat("ambientStrength", ambientStrength);
-		lightingShader.setVec3("lightColor", lightColor[0], lightColor[1], lightColor[2]);
+		lightingShader.setVec3("material.ambient", ambient[0], ambient[1], ambient[2]);
+		lightingShader.setVec3("material.diffuse", diffuse[0], diffuse [1], diffuse [2]);
+		lightingShader.setVec3("material.specular", specular[0], specular[1], specular[2]);
+		
+		lightingShader.setVec3("light.ambient", lightAmbient[0], lightAmbient[1], lightAmbient[2]);
+		lightingShader.setVec3("light.diffuse", lightDiffuse[0], lightDiffuse[1], lightDiffuse[2]);
+		lightingShader.setVec3("light.specular", lightSpecular[0], lightSpecular[1], lightSpecular[2]);
+		lightingShader.setVec3("light.position", lightPos);
+
+		lightingShader.setFloat("material.shininess", shininess);
+		lightingShader.setBool("showTexture", showTexture);
 
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
@@ -332,7 +346,9 @@ int main(int argc, char * argv[]) {
 		lightCubeShader.setMat4("projection", projection);
 		lightCubeShader.setMat4("view", view);
 
-		lightCubeShader.setVec3("lightColor", lightColor[0], lightColor[1], lightColor[2]);
+		lightCubeShader.setVec3("light.ambient", lightAmbient[0], lightAmbient[1], lightAmbient[2]);
+		lightCubeShader.setVec3("light.diffuse", lightDiffuse[0], lightDiffuse[1], lightDiffuse[2]);
+		lightCubeShader.setVec3("light.specular", lightSpecular[0], lightSpecular[1], lightSpecular[2]);
 
 		glBindVertexArray(lightVAO);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
@@ -345,9 +361,14 @@ int main(int argc, char * argv[]) {
 
 		//ImGui window
 		ImGui::Begin("Light Controls");
-			ImGui::SliderFloat("Specular Light Strenght", &specularStrength, 0.0f, 1.0f);
-			ImGui::SliderFloat("Ambient Light Strenght", &ambientStrength, 0.0f, 1.0f);
-			ImGui::ColorEdit3("Light Color", lightColor);
+			ImGui::InputFloat3("Material Ambient", ambient);
+			ImGui::InputFloat3("Material Diffuse", diffuse);
+			ImGui::InputFloat3("Material Specular", specular);
+			ImGui::InputFloat("Material Shininess", &shininess);
+			ImGui::Checkbox("Show Texture", &showTexture);
+			ImGui::InputFloat3("Light Ambient", lightAmbient);
+			ImGui::InputFloat3("Light Diffuse", lightDiffuse);
+			ImGui::InputFloat3("Light Specular", lightSpecular);
 		ImGui::End();
 
 		//ImGui draw
