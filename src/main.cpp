@@ -13,6 +13,9 @@
 #include "Shader.h"
 #include "Camera.h"
 
+unsigned int loadTexture(const char* path);
+
+
 // settings
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
@@ -25,18 +28,14 @@ bool firstMouse = true;
 float deltaTime = 0.0f;	// Time between current frame and last frame
 float lastFrame = 0.0f; // Time of last frame
 
-glm::vec3 ogLightPos(0.0f, 5.0f, 0.0f);
-glm::vec3 lightPos = ogLightPos;
-float lightSpecular[3] = { 1.0f, 1.0f, 1.0f };
+glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 float lightAmbient[3] = { 0.2f, 0.2f, 0.2f };
 float lightDiffuse[3] = { 0.5f, 0.5f, 0.5f };
+float lightSpecular[3] = { 1.0f, 1.0f, 1.0f };
 
 float specular[3] = { 0.5f, 0.5f, 0.5f };
-float ambient[3] = { 1.0f, 0.5f, 0.31f };
-float diffuse[3] = { 1.0f, 0.5f, 0.31f };
-float shininess = 32.0f;
+float shininess = 64.0f;
 
-bool showTexture = true;
 
 float lightFlyRadius = 4.0f;
 bool DEBUG = false;
@@ -257,31 +256,19 @@ int main(int argc, char * argv[]) {
 	lightingShader.setVec3("objectColor", 1.0f, 1.0f, 1.0f);
 
 	
-	unsigned int texture;
-	glGenTextures(1, &texture);
-	glActiveTexture(GL_TEXTURE0); // activate the texture unit first before binding texture
-	glBindTexture(GL_TEXTURE_2D, texture);
-	
-	// set the texture wrapping/filtering options (on the currently bound texture object)
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	unsigned int diffuseMap = loadTexture("Ressources/container2.png");
+	unsigned int speculareMap = loadTexture("Ressources/container2_specular.png");
 
-	lightingShader.setInt("texture1", 0); // or with shader class
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, diffuseMap);
 
-	int width, height, nrChannels;
-	unsigned char* data = stbi_load("Ressources/container.jpg", &width, &height, &nrChannels, 0);
-	if (data) {
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
-	else {
-		std::cout << "Failed to load texture" << std::endl;
-	}
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, speculareMap);
 
-	stbi_image_free(data);
-		
+
+	lightingShader.setInt("material.diffuse", 0);
+	lightingShader.setInt("material.specular", 1);
+
 
 	Shader lightCubeShader= Shader("Shader/LightCube.vert", "Shader/LightCube.frag");
 
@@ -304,14 +291,9 @@ int main(int argc, char * argv[]) {
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 
-
-		lightPos.x = ogLightPos.x + cos(glfwGetTime()) * lightFlyRadius;
-		lightPos.z = ogLightPos.z + sin(glfwGetTime()) * lightFlyRadius;
-
 		lightingShader.use();
 
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, texture);
+		
 
 		glm::mat4 model, view = glm::mat4(1.0);
 		glm::mat4 projection;
@@ -321,17 +303,20 @@ int main(int argc, char * argv[]) {
 		lightingShader.setMat4("projection", projection);
 		lightingShader.setMat4("view", view);
 		lightingShader.setVec3("viewPos", camera.Position);
-		lightingShader.setVec3("material.ambient", ambient[0], ambient[1], ambient[2]);
-		lightingShader.setVec3("material.diffuse", diffuse[0], diffuse [1], diffuse [2]);
-		lightingShader.setVec3("material.specular", specular[0], specular[1], specular[2]);
+		
 		
 		lightingShader.setVec3("light.ambient", lightAmbient[0], lightAmbient[1], lightAmbient[2]);
 		lightingShader.setVec3("light.diffuse", lightDiffuse[0], lightDiffuse[1], lightDiffuse[2]);
 		lightingShader.setVec3("light.specular", lightSpecular[0], lightSpecular[1], lightSpecular[2]);
 		lightingShader.setVec3("light.position", lightPos);
 
+
+
+		
+		lightingShader.setVec3("material.specular", specular[0], specular[1], specular[2]);
 		lightingShader.setFloat("material.shininess", shininess);
-		lightingShader.setBool("showTexture", showTexture);
+		
+		
 
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
@@ -361,11 +346,8 @@ int main(int argc, char * argv[]) {
 
 		//ImGui window
 		ImGui::Begin("Light Controls");
-			ImGui::InputFloat3("Material Ambient", ambient);
-			ImGui::InputFloat3("Material Diffuse", diffuse);
 			ImGui::InputFloat3("Material Specular", specular);
 			ImGui::InputFloat("Material Shininess", &shininess);
-			ImGui::Checkbox("Show Texture", &showTexture);
 			ImGui::InputFloat3("Light Ambient", lightAmbient);
 			ImGui::InputFloat3("Light Diffuse", lightDiffuse);
 			ImGui::InputFloat3("Light Specular", lightSpecular);
@@ -394,4 +376,41 @@ int main(int argc, char * argv[]) {
 	glfwDestroyWindow(window);
 	glfwTerminate();
 	exit(EXIT_SUCCESS);
+}
+
+unsigned int loadTexture(char const* path)
+{
+	unsigned int textureID;
+	glGenTextures(1, &textureID);
+
+	int width, height, nrComponents;
+	unsigned char* data = stbi_load(path, &width, &height, &nrComponents, 0);
+	if (data)
+	{
+		GLenum format;
+		if (nrComponents == 1)
+			format = GL_RED;
+		else if (nrComponents == 3)
+			format = GL_RGB;
+		else if (nrComponents == 4)
+			format = GL_RGBA;
+
+		glBindTexture(GL_TEXTURE_2D, textureID);
+		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		stbi_image_free(data);
+	}
+	else
+	{
+		std::cout << "Texture failed to load at path: " << path << std::endl;
+		stbi_image_free(data);
+	}
+
+	return textureID;
 }
