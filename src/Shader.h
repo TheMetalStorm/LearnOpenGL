@@ -15,6 +15,8 @@
 class Shader
 {
 private:
+
+	const std::string INCLUDE_PREFIX = "#include ";
 	unsigned int createFragShader(const char* shaderSource) {
 		int success;
 		char infoLog[512];
@@ -47,6 +49,34 @@ private:
 		return vertexShader;
 	}
 
+	// Inject "#include "<path>" " content into Shader File
+	// Currently not recursive (only resolves #include in input to Shader constructor) and does not check for Circular dependency
+	std::string preprocessGLSLFile(std::string originalCode) {
+
+		std::istringstream f(originalCode);
+		std::ostringstream processedCode;
+		std::string line;
+		while (std::getline(f, line)) {
+			size_t substring_length = line.find(INCLUDE_PREFIX);
+
+			if(substring_length == std::string::npos)
+			{
+				processedCode << line << std::endl;
+				continue;
+			}
+			
+			char charToRemove = '\"';
+			std::string path = line.substr(substring_length + INCLUDE_PREFIX.length());
+			path.erase(std::remove(path.begin(), path.end(), charToRemove), path.end());
+			std::string includeCode;
+			readFile(path.c_str(), includeCode);
+			if (includeCode.length() != 0) {
+				processedCode << includeCode << std::endl;
+			}	
+		}
+		return processedCode.str();
+	}
+
 public:
 	unsigned int ID;
 
@@ -58,31 +88,17 @@ public:
 		char infoLog[512];
 		//get shader src from file
 		std::string vertexCode, fragmentCode;
-		std::ifstream vShaderFile, fShaderFile;
 
-		vShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-		fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-		try{
-			vShaderFile.open(vertexPath);
-			fShaderFile.open(fragmentPath);
-			std::stringstream vShaderStream, fShaderStream;
-			// read file's buffer contents into streams
-			vShaderStream << vShaderFile.rdbuf();
-			fShaderStream << fShaderFile.rdbuf();
-			// close file handlers
-			vShaderFile.close();
-			fShaderFile.close();
-			// convert stream into string
-			vertexCode = vShaderStream.str();
-			fragmentCode = fShaderStream.str();
-		}
-		catch (std::ifstream::failure e)
-		{
-			std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ, either " << vertexPath << " or " << fragmentPath << std::endl;
-		}
+		readFile(vertexPath, vertexCode);
+		readFile(fragmentPath, fragmentCode);
 
-		const char* vShaderCode = vertexCode.c_str();
-		const char* fShaderCode = fragmentCode.c_str();
+
+		std::string actualVertexCode = preprocessGLSLFile(vertexCode);
+		std::string actualFragmentCode = preprocessGLSLFile(fragmentCode);
+
+
+		const char* vShaderCode = actualVertexCode.c_str();
+		const char* fShaderCode = actualFragmentCode.c_str();
 
 		unsigned int vertexShader = createVertShader(vShaderCode);
 		unsigned int fragmentShader = createFragShader(fShaderCode);
@@ -104,6 +120,29 @@ public:
 		glDeleteShader(fragmentShader);
 
 
+	}
+
+
+	void readFile(const char* path, std::string& code)
+	{
+		std::ifstream file;
+		file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+
+
+		try {
+			file.open(path);
+			std::stringstream stream;
+			// read file's buffer contents into streams
+			stream << file.rdbuf();
+			// close file handlers
+			file.close();
+			// convert stream into string
+			code = stream.str();
+		}
+		catch (std::ifstream::failure e)
+		{
+			std::cout << "ERROR::FILE_NOT_SUCCESFULLY_READ \nPath: " << path  << std::endl;
+		}
 	}
 
 	void use()

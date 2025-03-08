@@ -8,19 +8,9 @@ uniform vec3 objectColor;
 uniform vec3 viewPos;
 uniform bool showTexture;
 
-struct Material {
-    sampler2D diffuse;
-    sampler2D specular;
-    float     shininess;
-}; 
 
-struct Light {
-    vec3 position;
-    vec3 ambient;
-    vec3 diffuse;
-    vec3 specular;
-};
-
+#include "Shader/Light.include"
+#include "Shader/Material.include"
 
 uniform Material material;
 uniform Light light;
