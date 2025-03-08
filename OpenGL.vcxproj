@@ -149,12 +149,12 @@
     <ClCompile Include="src\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shader\Light.include" />
+    <None Include="Shader\Light.glsl" />
     <None Include="Shader\LightCube.frag" />
     <None Include="Shader\LightCube.vert" />
     <None Include="Shader\Lighting.frag" />
     <None Include="Shader\Lighting.vert" />
-    <None Include="Shader\Material.include" />
+    <None Include="Shader\Material.glsl" />
     <None Include="Shader\Texture.frag" />
     <None Include="Shader\Texture.vert" />
   </ItemGroup>
