@@ -70,6 +70,18 @@
     <None Include="Shader\Material.include">
       <Filter>Shader</Filter>
     </None>
+    <None Include="Shader\DirLight.include">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\PointLight.include">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\FlashLight.include">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\DirLighting.frag">
+      <Filter>Shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Camera.h">

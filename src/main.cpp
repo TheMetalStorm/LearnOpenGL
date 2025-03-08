@@ -29,6 +29,7 @@ float deltaTime = 0.0f;	// Time between current frame and last frame
 float lastFrame = 0.0f; // Time of last frame
 
 glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
+glm::vec3 lightDir(-0.2f, -1.0f, -0.3f);
 float lightAmbient[3] = { 0.2f, 0.2f, 0.2f };
 float lightDiffuse[3] = { 0.5f, 0.5f, 0.5f };
 float lightSpecular[3] = { 1.0f, 1.0f, 1.0f };
@@ -251,6 +252,7 @@ int main(int argc, char * argv[]) {
 
 
 	Shader lightingShader = Shader("Shader/Lighting.vert", "Shader/Lighting.frag");
+	Shader lightingShader = Shader("Shader/Lighting.vert", "Shader/DirLighting.frag");
 
 	lightingShader.use();
 	lightingShader.setVec3("objectColor", 1.0f, 1.0f, 1.0f);
@@ -299,7 +301,7 @@ int main(int argc, char * argv[]) {
 		glm::mat4 projection;
 		projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 		view = camera.GetViewMatrix();
-		lightingShader.setMat4("model", model);
+		//lightingShader.setMat4("model", model);
 		lightingShader.setMat4("projection", projection);
 		lightingShader.setMat4("view", view);
 		lightingShader.setVec3("viewPos", camera.Position);
@@ -308,7 +310,7 @@ int main(int argc, char * argv[]) {
 		lightingShader.setVec3("light.ambient", lightAmbient[0], lightAmbient[1], lightAmbient[2]);
 		lightingShader.setVec3("light.diffuse", lightDiffuse[0], lightDiffuse[1], lightDiffuse[2]);
 		lightingShader.setVec3("light.specular", lightSpecular[0], lightSpecular[1], lightSpecular[2]);
-		lightingShader.setVec3("light.position", lightPos);
+		lightingShader.setVec3("light.direction", lightDir);
 
 
 
@@ -317,9 +319,18 @@ int main(int argc, char * argv[]) {
 		lightingShader.setFloat("material.shininess", shininess);
 		
 		
-
 		glBindVertexArray(VAO);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		for (unsigned int i = 0; i < 10; i++)
+		{
+			glm::mat4 model = glm::mat4(1.0f);
+			model = glm::translate(model, cubePositions[i]);
+			float angle = 20.0f * i;
+			model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+			lightingShader.setMat4("model", model);
+
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+		}
 
 
 		lightCubeShader.use();
