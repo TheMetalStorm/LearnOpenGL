@@ -160,7 +160,7 @@
   <ItemGroup>
     <None Include="Shader\DirLight.include" />
     <None Include="Shader\DirLighting.frag" />
-    <None Include="Shader\FlashLight.include" />
+    <None Include="Shader\SpotLight.include" />
     <None Include="Shader\Light.include" />
     <None Include="Shader\LightCube.frag" />
     <None Include="Shader\LightCube.vert" />
@@ -169,6 +169,7 @@
     <None Include="Shader\Material.include" />
     <None Include="Shader\PointLighting.frag" />
     <None Include="Shader\PointLight.include" />
+    <None Include="Shader\SpotLighting.frag" />
     <None Include="Shader\Texture.frag" />
     <None Include="Shader\Texture.vert" />
   </ItemGroup>

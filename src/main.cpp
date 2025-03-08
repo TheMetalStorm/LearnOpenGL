@@ -251,7 +251,7 @@ int main(int argc, char * argv[]) {
 
 
 
-	Shader lightingShader = Shader("Shader/Lighting.vert", "Shader/PointLighting.frag");
+	Shader lightingShader = Shader("Shader/Lighting.vert", "Shader/SpotLighting.frag");
 
 	lightingShader.use();
 	lightingShader.setVec3("objectColor", 1.0f, 1.0f, 1.0f);
@@ -309,7 +309,10 @@ int main(int argc, char * argv[]) {
 		lightingShader.setVec3("light.ambient", lightAmbient[0], lightAmbient[1], lightAmbient[2]);
 		lightingShader.setVec3("light.diffuse", lightDiffuse[0], lightDiffuse[1], lightDiffuse[2]);
 		lightingShader.setVec3("light.specular", lightSpecular[0], lightSpecular[1], lightSpecular[2]);
-		lightingShader.setVec3("light.position", lightPos);
+		
+		lightingShader.setVec3("light.position", camera.Position);
+		lightingShader.setVec3("light.direction", camera.Front);
+		lightingShader.setFloat("light.cutOff", glm::cos(glm::radians(12.5f)));
 
 		lightingShader.setFloat("light.constant", 1.0f);
 		lightingShader.setFloat("light.linear", 0.09f);

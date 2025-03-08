@@ -76,13 +76,16 @@
     <None Include="Shader\PointLight.include">
       <Filter>Shader</Filter>
     </None>
-    <None Include="Shader\FlashLight.include">
+    <None Include="Shader\SpotLight.include">
       <Filter>Shader</Filter>
     </None>
     <None Include="Shader\DirLighting.frag">
       <Filter>Shader</Filter>
     </None>
     <None Include="Shader\PointLighting.frag">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\SpotLighting.frag">
       <Filter>Shader</Filter>
     </None>
   </ItemGroup>
