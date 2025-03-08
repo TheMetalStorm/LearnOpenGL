@@ -82,6 +82,9 @@
     <None Include="Shader\DirLighting.frag">
       <Filter>Shader</Filter>
     </None>
+    <None Include="Shader\PointLighting.frag">
+      <Filter>Shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Camera.h">
