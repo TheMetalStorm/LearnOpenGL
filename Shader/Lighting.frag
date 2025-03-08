@@ -9,8 +9,8 @@ uniform vec3 viewPos;
 uniform bool showTexture;
 
 
-#include "Shader/Light.glsl" 
-#include "Shader/Material.glsl" 
+#include "Shader/Light.include"
+#include "Shader/Material.include"
 
 uniform Material material;
 uniform Light light;

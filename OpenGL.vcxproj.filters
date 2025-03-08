@@ -64,10 +64,10 @@
     <None Include="Shader\Lighting.vert">
       <Filter>Shader</Filter>
     </None>
-    <None Include="Shader\Light.glsl">
+    <None Include="Shader\Light.include">
       <Filter>Shader</Filter>
     </None>
-    <None Include="Shader\Material.glsl">
+    <None Include="Shader\Material.include">
       <Filter>Shader</Filter>
     </None>
   </ItemGroup>
