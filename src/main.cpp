@@ -250,7 +250,7 @@ int main(int argc, char * argv[]) {
 	glBindVertexArray(0);
 
 
-
+	Shader lightCubeShader = Shader("Shader/LightCube.vert", "Shader/LightCube.frag");
 	Shader lightingShader = Shader("Shader/Lighting.vert", "Shader/SpotLighting.frag");
 
 	lightingShader.use();
@@ -271,7 +271,6 @@ int main(int argc, char * argv[]) {
 	lightingShader.setInt("material.specular", 1);
 
 
-	Shader lightCubeShader= Shader("Shader/LightCube.vert", "Shader/LightCube.frag");
 
 
 	while (!glfwWindowShouldClose(window))
@@ -305,6 +304,7 @@ int main(int argc, char * argv[]) {
 		lightingShader.setMat4("view", view);
 		lightingShader.setVec3("viewPos", camera.Position);
 		
+
 		
 		lightingShader.setVec3("light.ambient", lightAmbient[0], lightAmbient[1], lightAmbient[2]);
 		lightingShader.setVec3("light.diffuse", lightDiffuse[0], lightDiffuse[1], lightDiffuse[2]);
@@ -313,13 +313,14 @@ int main(int argc, char * argv[]) {
 		lightingShader.setVec3("light.position", camera.Position);
 		lightingShader.setVec3("light.direction", camera.Front);
 		lightingShader.setFloat("light.cutOff", glm::cos(glm::radians(12.5f)));
+		//Set Outer Cutoff for Soft Light
+		//lightingShader.setFloat("light.outerCutOff", glm::cos(glm::radians(17.5f)));
+
 
 		lightingShader.setFloat("light.constant", 1.0f);
 		lightingShader.setFloat("light.linear", 0.09f);
 		lightingShader.setFloat("light.quadratic", 0.032f);
-
 		
-		lightingShader.setVec3("material.specular", specular[0], specular[1], specular[2]);
 		lightingShader.setFloat("material.shininess", shininess);
 		
 		
@@ -361,7 +362,6 @@ int main(int argc, char * argv[]) {
 
 		//ImGui window
 		ImGui::Begin("Light Controls");
-			ImGui::InputFloat3("Material Specular", specular);
 			ImGui::InputFloat("Material Shininess", &shininess);
 			ImGui::InputFloat3("Light Ambient", lightAmbient);
 			ImGui::InputFloat3("Light Diffuse", lightDiffuse);

@@ -2,6 +2,8 @@ struct SpotLight {
     vec3  position;
     vec3  direction;
     float cutOff;
+    float outerCutOff;
+    bool softEdge;
 
     float constant;
     float linear;

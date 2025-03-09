@@ -17,14 +17,13 @@ uniform Material material;
 
 void main()
 {
-
-     vec3 lightDir = normalize(light.position - FragPos);
-    
-    // check if lighting is inside the spotlight cone
+    vec3 lightDir = normalize(light.position - FragPos);
     float theta = dot(lightDir, normalize(-light.direction)); 
-    
-    if(theta > light.cutOff) // remember that we're working with angles as cosines instead of degrees so a '>' is used.
-    {    
+
+    if(theta <= light.cutOff && light.outerCutOff == 0) {
+        FragColor = vec4(light.ambient * vec3(texture(material.diffuse, TexCoord)), 1.0);
+    }
+    else{
         // ambient
         vec3 ambient = light.ambient * texture(material.diffuse, TexCoord).rgb;
         
@@ -43,16 +42,24 @@ void main()
         float distance    = length(light.position - FragPos);
         float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));    
 
-        // ambient  *= attenuation; // remove attenuation from ambient, as otherwise at large distances the light would be darker inside than outside the spotlight due the ambient term in the else branch
+        
         diffuse   *= attenuation;
         specular *= attenuation;   
             
+        if(light.outerCutOff != 0){
+            ambient  *= attenuation; 
+            float epsilon   = light.cutOff - light.outerCutOff;
+            float intensity = clamp((theta - light.outerCutOff) / epsilon, 0.0, 1.0);   
+    
+            diffuse   *= intensity;
+            specular *= intensity; 
+        }
+        
+        
         vec3 result = ambient + diffuse + specular;
         FragColor = vec4(result, 1.0);
     }
-    else 
-    {
-        // else, use ambient light so scene isn't completely dark outside the spotlight.
-        FragColor = vec4(light.ambient * texture(material.diffuse, TexCoord).rgb, 1.0);
-    }
+   
+    
+
 }
