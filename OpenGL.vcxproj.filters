@@ -58,10 +58,10 @@
     <None Include="Shader\LightCube.vert">
       <Filter>Shader</Filter>
     </None>
-    <None Include="Shader\Lighting.frag">
+    <None Include="Shader\PhongShading.frag">
       <Filter>Shader</Filter>
     </None>
-    <None Include="Shader\Lighting.vert">
+    <None Include="Shader\PhongShading.vert">
       <Filter>Shader</Filter>
     </None>
     <None Include="Shader\Light.include">

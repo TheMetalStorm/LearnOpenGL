@@ -164,8 +164,8 @@
     <None Include="Shader\Light.include" />
     <None Include="Shader\LightCube.frag" />
     <None Include="Shader\LightCube.vert" />
-    <None Include="Shader\Lighting.frag" />
-    <None Include="Shader\Lighting.vert" />
+    <None Include="Shader\PhongShading.frag" />
+    <None Include="Shader\PhongShading.vert" />
     <None Include="Shader\Material.include" />
     <None Include="Shader\PointLighting.frag" />
     <None Include="Shader\PointLight.include" />
