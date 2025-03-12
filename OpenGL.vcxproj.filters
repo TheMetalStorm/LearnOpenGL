@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Headerdateien">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{2de0b6db-0de5-43ee-8e62-95ec48b3b008}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\glad.c">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\imgui.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\imgui_demo.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\imgui_draw.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\imgui_impl_glfw.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\imgui_impl_opengl3.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\imgui_tables.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\imgui_widgets.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="src\stb_image.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shader\Texture.vert">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\Texture.frag">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\LightCube.frag">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\LightCube.vert">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\PhongShading.frag">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\PhongShading.vert">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\Light.include">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\Material.include">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\DirLight.include">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\PointLight.include">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\SpotLight.include">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\DirLighting.frag">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\PointLighting.frag">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\SpotLighting.frag">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\ModelLoading.frag">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\ModelLoading.vert">
+      <Filter>Shader</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Camera.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Shader.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Mesh.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Model.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
