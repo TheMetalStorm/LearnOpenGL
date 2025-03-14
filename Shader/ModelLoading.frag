@@ -4,13 +4,11 @@ out vec4 FragColor;
 in vec2 TexCoord;
 
 
-struct Material{
-    sampler2D texture_diffuse1;
-};
+#include "Shader/ModelMaterial.include"
 
 uniform Material material;
 
 void main()
 {    
-    FragColor = texture(material.texture_diffuse1, TexCoord);
+    FragColor = texture(material.texture_roughness1, TexCoord);
 }

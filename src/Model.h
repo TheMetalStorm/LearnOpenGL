@@ -101,9 +101,18 @@ private:
 			vector<Texture> diffuseMaps = loadMaterialTextures(material,
 				aiTextureType_DIFFUSE, "texture_diffuse");
 			textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+		
 			vector<Texture> specularMaps = loadMaterialTextures(material,
 				aiTextureType_SPECULAR, "texture_specular");
 			textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+		
+			vector<Texture> normalMaps = loadMaterialTextures(material,
+				aiTextureType_NORMALS, "texture_normal");
+			textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
+
+			vector<Texture> roughnessMaps = loadMaterialTextures(material,
+				aiTextureType_METALNESS, "texture_roughness");
+			textures.insert(textures.end(), roughnessMaps.begin(), roughnessMaps.end());
 		}
 
 		return Mesh(vertices, indices, textures);
