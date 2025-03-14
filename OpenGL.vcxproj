@@ -102,8 +102,8 @@
       <AdditionalLibraryDirectories>$(ProjectDir)libraries\lib</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
-      <Command>PowerShell Copy-Item "-Path '$(ProjectDir)Resources'  -Destination  '$(OutDir)Resources' -Recurse"
-PowerShell Copy-Item "-Path '$(ProjectDir)Shader'  -Destination  '$(OutDir)Shader' -Recurse"</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -125,8 +125,8 @@ PowerShell Copy-Item "-Path '$(ProjectDir)Shader'  -Destination  '$(OutDir)Shade
       <AdditionalDependencies>opengl32.lib;assimp-vc143-mtd.lib;glfw3.lib;zlibstaticd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>PowerShell Copy-Item "-Path '$(ProjectDir)Resources'  -Destination  '$(OutDir)Resources' -Recurse"
-PowerShell Copy-Item "-Path '$(ProjectDir)Shader'  -Destination  '$(OutDir)Shader' -Recurse"</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -144,8 +144,8 @@ PowerShell Copy-Item "-Path '$(ProjectDir)Shader'  -Destination  '$(OutDir)Shade
       <AdditionalLibraryDirectories>$(ProjectDir)libraries\lib</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
-      <Command>PowerShell Copy-Item "-Path '$(ProjectDir)Resources'  -Destination  '$(OutDir)Resources' -Recurse"
-PowerShell Copy-Item "-Path '$(ProjectDir)Shader'  -Destination  '$(OutDir)Shader' -Recurse"</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -167,8 +167,8 @@ PowerShell Copy-Item "-Path '$(ProjectDir)Shader'  -Destination  '$(OutDir)Shade
       <AdditionalDependencies>opengl32.lib;assimp-vc143-mtd.lib;glfw3.lib;zlibstaticd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>PowerShell Copy-Item "-Path '$(ProjectDir)Resources'  -Destination  '$(OutDir)Resources' -Recurse"
-PowerShell Copy-Item "-Path '$(ProjectDir)Shader'  -Destination  '$(OutDir)Shader' -Recurse"</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -201,6 +201,7 @@ PowerShell Copy-Item "-Path '$(ProjectDir)Shader'  -Destination  '$(OutDir)Shade
     <None Include="Shader\ModelLoading.vert">
       <DeploymentContent>false</DeploymentContent>
     </None>
+    <None Include="Shader\ModelMaterial.include" />
     <None Include="Shader\SpotLight.include">
       <DeploymentContent>false</DeploymentContent>
     </None>
