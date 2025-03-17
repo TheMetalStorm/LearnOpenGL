@@ -102,10 +102,20 @@
       <AdditionalLibraryDirectories>$(ProjectDir)libraries\lib</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
-      <Command>robocopy "$(ProjectDir)Resources" "$(OutDir)Resources" /E /NFL /NDL /NJH /NJS
-robocopy "$(ProjectDir)Shader" "$(OutDir)Shader" /E /NFL /NDL /NJH /NJS
-exit 0</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>if not exist "$(OutDir)" mkdir "$(OutDir)"
+
+robocopy "$(ProjectDir)Resources" "$(OutDir)Resources" /E /NFL /NDL /NJH /NJS  
+if %ERRORLEVEL% GEQ 8 exit /b %ERRORLEVEL%
+if %ERRORLEVEL% LEQ 1 exit /b 0
+
+robocopy "$(ProjectDir)Shader" "$(OutDir)Shader" /E /NFL /NDL /NJH /NJS  
+if %ERRORLEVEL% GEQ 8 exit /b %ERRORLEVEL%
+if %ERRORLEVEL% LEQ 1 exit /b 0</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -126,10 +136,20 @@ exit 0</Command>
       <AdditionalDependencies>opengl32.lib;assimp-vc143-mtd.lib;glfw3.lib;zlibstaticd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>robocopy "$(ProjectDir)Resources" "$(OutDir)Resources" /E /NFL /NDL /NJH /NJS
-robocopy "$(ProjectDir)Shader" "$(OutDir)Shader" /E /NFL /NDL /NJH /NJS
-exit 0</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>if not exist "$(OutDir)" mkdir "$(OutDir)"
+
+robocopy "$(ProjectDir)Resources" "$(OutDir)Resources" /E /NFL /NDL /NJH /NJS  
+if %ERRORLEVEL% GEQ 8 exit /b %ERRORLEVEL%
+if %ERRORLEVEL% LEQ 1 exit /b 0
+
+robocopy "$(ProjectDir)Shader" "$(OutDir)Shader" /E /NFL /NDL /NJH /NJS  
+if %ERRORLEVEL% GEQ 8 exit /b %ERRORLEVEL%
+if %ERRORLEVEL% LEQ 1 exit /b 0</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -146,10 +166,20 @@ exit 0</Command>
       <AdditionalLibraryDirectories>$(ProjectDir)libraries\lib</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
-      <Command>robocopy "$(ProjectDir)Resources" "$(OutDir)Resources" /E /NFL /NDL /NJH /NJS
-robocopy "$(ProjectDir)Shader" "$(OutDir)Shader" /E /NFL /NDL /NJH /NJS
-exit 0</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>if not exist "$(OutDir)" mkdir "$(OutDir)"
+
+robocopy "$(ProjectDir)Resources" "$(OutDir)Resources" /E /NFL /NDL /NJH /NJS  
+if %ERRORLEVEL% GEQ 8 exit /b %ERRORLEVEL%
+if %ERRORLEVEL% LEQ 1 exit /b 0
+
+robocopy "$(ProjectDir)Shader" "$(OutDir)Shader" /E /NFL /NDL /NJH /NJS  
+if %ERRORLEVEL% GEQ 8 exit /b %ERRORLEVEL%
+if %ERRORLEVEL% LEQ 1 exit /b 0</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -170,10 +200,20 @@ exit 0</Command>
       <AdditionalDependencies>opengl32.lib;assimp-vc143-mtd.lib;glfw3.lib;zlibstaticd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>robocopy "$(ProjectDir)Resources" "$(OutDir)Resources" /E /NFL /NDL /NJH /NJS
-robocopy "$(ProjectDir)Shader" "$(OutDir)Shader" /E /NFL /NDL /NJH /NJS
-exit 0</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>if not exist "$(OutDir)" mkdir "$(OutDir)"
+
+robocopy "$(ProjectDir)Resources" "$(OutDir)Resources" /E /NFL /NDL /NJH /NJS  
+if %ERRORLEVEL% GEQ 8 exit /b %ERRORLEVEL%
+if %ERRORLEVEL% LEQ 1 exit /b 0
+
+robocopy "$(ProjectDir)Shader" "$(OutDir)Shader" /E /NFL /NDL /NJH /NJS  
+if %ERRORLEVEL% GEQ 8 exit /b %ERRORLEVEL%
+if %ERRORLEVEL% LEQ 1 exit /b 0</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\glad.c" />
