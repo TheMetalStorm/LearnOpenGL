@@ -1,11 +1,3 @@
-
-
-//TODO: Figure out how to add Ressources without his, because slow as HIFL
-/*
-PowerShell Copy-Item "-Path '$(ProjectDir)Resources'  -Destination  '$(OutDir)Resources' -Recurse"
-PowerShell Copy-Item "-Path '$(ProjectDir)Shader'  -Destination  '$(OutDir)Shader' -Recurse"
-*/
-
 #include <iostream>
 
 #include <glm/glm.hpp>
