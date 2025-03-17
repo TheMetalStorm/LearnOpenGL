@@ -102,8 +102,9 @@
       <AdditionalLibraryDirectories>$(ProjectDir)libraries\lib</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
-      <Command>
-      </Command>
+      <Command>robocopy "$(ProjectDir)Resources" "$(OutDir)Resources" /E /NFL /NDL /NJH /NJS
+robocopy "$(ProjectDir)Shader" "$(OutDir)Shader" /E /NFL /NDL /NJH /NJS
+exit 0</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -125,8 +126,9 @@
       <AdditionalDependencies>opengl32.lib;assimp-vc143-mtd.lib;glfw3.lib;zlibstaticd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>
-      </Command>
+      <Command>robocopy "$(ProjectDir)Resources" "$(OutDir)Resources" /E /NFL /NDL /NJH /NJS
+robocopy "$(ProjectDir)Shader" "$(OutDir)Shader" /E /NFL /NDL /NJH /NJS
+exit 0</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -144,8 +146,9 @@
       <AdditionalLibraryDirectories>$(ProjectDir)libraries\lib</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
-      <Command>
-      </Command>
+      <Command>robocopy "$(ProjectDir)Resources" "$(OutDir)Resources" /E /NFL /NDL /NJH /NJS
+robocopy "$(ProjectDir)Shader" "$(OutDir)Shader" /E /NFL /NDL /NJH /NJS
+exit 0</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -167,8 +170,9 @@
       <AdditionalDependencies>opengl32.lib;assimp-vc143-mtd.lib;glfw3.lib;zlibstaticd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>
-      </Command>
+      <Command>robocopy "$(ProjectDir)Resources" "$(OutDir)Resources" /E /NFL /NDL /NJH /NJS
+robocopy "$(ProjectDir)Shader" "$(OutDir)Shader" /E /NFL /NDL /NJH /NJS
+exit 0</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
