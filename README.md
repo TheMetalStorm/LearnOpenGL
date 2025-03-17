@@ -1,5 +1,5 @@
-# Build (VS 2022)
+# Build (Windows x64, VS 2022)
 - Clone Project
 - Open `.sln` File
-- Build (currently Debug, x64 only)
+- Build (currently Debug only)
 - BuildDir is `.\bin\`
