@@ -1,6 +1,3 @@
-//TODO: STH IS WRONG IN THIS CLASS
-// DOESNT RENDER and when it renders (when replaces with file from learnopengl ) tex is fucked, not fixed when replacing model.h so problem should be here
-
 #pragma once
 
 #include <string>
