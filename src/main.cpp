@@ -21,6 +21,9 @@ PowerShell Copy-Item "-Path '$(ProjectDir)Shader'  -Destination  '$(OutDir)Shade
 #include "Shader.h"
 #include "Camera.h"
 #include "Model.h"
+#include "DirLight.h"
+#include "SpotLight.h"
+#include "PointLight.h"
 
 unsigned int loadTexture(const char* path);
 
@@ -41,7 +44,7 @@ glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 glm::vec3 lightDir(-0.2f, -1.0f, -0.3f);
 float dirLightAmbient[3] = { 0.2f, 0.2f, 0.2f };
 float dirLightDiffuse[3] = { 0.5f, 0.5f, 0.5f };
-float dirLightSpecular[3] = { 1.0f, 1.0f, 1.0f };
+float dirLightSpecular[3] = { .3f, .3f, .3f };
 
 float spotLightAmbient[3] = { 0.2f, 0.2f, 0.2f };
 float spotLightDiffuse[3] = { 0.5f, 0.5f, 0.5f };
@@ -60,7 +63,7 @@ glm::vec3 pointLightPositions[] = {
 };
 
 float specular[3] = { 0.5f, 0.5f, 0.5f };
-float shininess = 64.0f;
+float shininess = 32.0f;
 
 
 float lightFlyRadius = 4.0f;
@@ -171,71 +174,18 @@ int main(int argc, char * argv[]) {
 	ImGui::StyleColorsDark();
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init("#version 330");
-	//v, t, n
-	float vertices[] = {
-	-0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 0.0f,  0.0f, -1.0f,
-	 0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f,  0.0f, -1.0f,
-	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 0.0f,  0.0f, -1.0f,
-	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 0.0f,  0.0f, -1.0f,
-	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 0.0f,  0.0f, -1.0f,
-	-0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 0.0f,  0.0f, -1.0f,
-
-	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,  0.0f,  0.0f, 1.0f,
-	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 0.0f,  0.0f, 1.0f,
-	 0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 0.0f,  0.0f, 1.0f,
-	 0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 0.0f,  0.0f, 1.0f,
-	-0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 0.0f,  0.0f, 1.0f,
-	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
-
-	-0.5f,  0.5f,  0.5f,  1.0f, 0.0f, -1.0f,  0.0f,  0.0f,
-	-0.5f,  0.5f, -0.5f,  1.0f, 1.0f, -1.0f,  0.0f,  0.0f,
-	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f, -1.0f,  0.0f,  0.0f,
-	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f, -1.0f,  0.0f,  0.0f,
-	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f, -1.0f,  0.0f,  0.0f,
-	-0.5f,  0.5f,  0.5f,  1.0f, 0.0f, -1.0f,  0.0f,  0.0f,
-
-	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 1.0f,  0.0f,  0.0f,
-	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  0.0f,  0.0f,
-	 0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 1.0f,  0.0f,  0.0f,
-	 0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 1.0f,  0.0f,  0.0f,
-	 0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 1.0f,  0.0f,  0.0f,
-	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 1.0f,  0.0f,  0.0f,
-
-	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 0.0f, -1.0f,  0.0f,
-	 0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 0.0f, -1.0f,  0.0f,
-	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 0.0f, -1.0f,  0.0f,
-	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 0.0f, -1.0f,  0.0f,
-	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 0.0f, -1.0f,  0.0f,
-	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 0.0f, -1.0f,  0.0f,
-
-	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 0.0f,  1.0f,  0.0f,
-	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 0.0f,  1.0f,  0.0f,
-	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 0.0f,  1.0f,  0.0f,
-	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 0.0f,  1.0f,  0.0f,
-	-0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 0.0f,  1.0f,  0.0f,
-	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 0.0f,  1.0f,  0.0f
-	};
 
 
-	glm::vec3 cubePositions[] = {
-		glm::vec3(0.0f,  0.0f,  0.0f),
-		glm::vec3(2.0f,  5.0f, -15.0f),
-		glm::vec3(-1.5f, -2.2f, -2.5f),
-		glm::vec3(-3.8f, -2.0f, -12.3f),
-		glm::vec3(2.4f, -0.4f, -3.5f),
-		glm::vec3(-1.7f,  3.0f, -7.5f),
-		glm::vec3(1.3f, -2.0f, -2.5f),
-		glm::vec3(1.5f,  2.0f, -2.5f),
-		glm::vec3(1.5f,  0.2f, -1.5f),
-		glm::vec3(-1.3f,  1.0f, -1.5f)
-	};
 
+	Shader lightingShader = Shader("Shader/BlinnPhong.vert", "Shader/BlinnPhong.frag");
+	Shader pointLightShader = Shader("Shader/LightCube.vert", "Shader/LightCube.frag");
 
-	Shader lightingShader = Shader("Shader/ModelLoading.vert", "Shader/ModelLoading.frag");
 	Model backpack = Model("Resources/backpack/backpack.obj");
+	Model cube = Model("Resources/cube.obj");
 
-
-
+	DirLight dirLight;
+	SpotLight spotLight;
+	PointLight pointLights[std::size(pointLightPositions)];
 
 	while (!glfwWindowShouldClose(window))
 	{	
@@ -256,6 +206,30 @@ int main(int argc, char * argv[]) {
 		lastFrame = currentFrame;
 
 		lightingShader.use();
+		lightingShader.setVec3("viewPos", camera.Position);
+		lightingShader.setFloat("material.shininess", shininess);
+		
+		dirLight.dir = glm::vec3(sin(glfwGetTime()), dirLight.dir.y, cos(glfwGetTime())),
+		dirLight.ambient = glm::make_vec3(dirLightAmbient);
+		dirLight.diffuse = glm::make_vec3(dirLightDiffuse); ;
+		dirLight.specular = glm::make_vec3(dirLightSpecular);
+		dirLight.sendToShader(lightingShader);
+
+		spotLight.position = camera.Position;
+		spotLight.direction = camera.Front;
+		spotLight.ambient = glm::make_vec3(spotLightAmbient);
+		spotLight.diffuse = glm::make_vec3(spotLightDiffuse);
+		spotLight.specular = glm::make_vec3(spotLightSpecular);
+		spotLight.sendToShader(lightingShader);
+
+		for (int i = 0; i < std::size(pointLightPositions); i++) {
+
+			pointLights[i].position = pointLightPositions[i];
+			pointLights[i].ambient = glm::make_vec3(pointLightAmbient);
+			pointLights[i].specular = glm::make_vec3(pointLightSpecular);
+			pointLights[i].diffuse = glm::make_vec3(pointLightDiffuse);
+			pointLights[i].sendToShader(lightingShader, i);
+		}
 
 		// view/projection transformations
 		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
@@ -263,15 +237,31 @@ int main(int argc, char * argv[]) {
 		lightingShader.setMat4("projection", projection);
 		lightingShader.setMat4("view", view);
 
-		// render the loaded model
+		// model Transformation
 		glm::mat4 model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
-		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	// it's a bit too big for our scene, so scale it down
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f)); 
+		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	
 		lightingShader.setMat4("model", model);
+
+		// render the loaded model
 		backpack.Draw(lightingShader);
 		
-		
-		
+		pointLightShader.use();
+		pointLightShader.setMat4("projection", projection);
+		pointLightShader.setMat4("view", view);
+
+
+		for (int i = 0; i < std::size(pointLightPositions); i++) {
+
+			pointLightShader.setVec3("light.ambient", glm::make_vec3(pointLightAmbient));
+			pointLightShader.setVec3("light.specular", glm::make_vec3(pointLightSpecular));
+			pointLightShader.setVec3("light.diffuse", glm::make_vec3(pointLightDiffuse));
+			model = glm::mat4(1.0f);
+			model = glm::translate(model, pointLights[i].position);
+			model = glm::scale(model, glm::vec3(0.2f)); // a smaller cube
+			pointLightShader.setMat4("model", model);
+			cube.Draw(pointLightShader);
+		}
 
 		
 

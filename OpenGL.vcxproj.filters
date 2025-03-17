@@ -91,13 +91,16 @@
     <None Include="Shader\SpotLighting.frag">
       <Filter>Shader</Filter>
     </None>
-    <None Include="Shader\ModelLoading.frag">
+    <None Include="Shader\BlinnPhong.frag">
       <Filter>Shader</Filter>
     </None>
-    <None Include="Shader\ModelLoading.vert">
+    <None Include="Shader\BlinnPhong.vert">
       <Filter>Shader</Filter>
     </None>
     <None Include="Shader\ModelMaterial.include">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\BlinnPhongCalculations.include">
       <Filter>Shader</Filter>
     </None>
   </ItemGroup>
@@ -112,6 +115,15 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="src\Model.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DirLight.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SpotLight.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PointLight.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

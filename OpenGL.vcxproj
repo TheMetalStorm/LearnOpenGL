@@ -195,13 +195,14 @@
     <None Include="Shader\DirLighting.frag">
       <DeploymentContent>false</DeploymentContent>
     </None>
-    <None Include="Shader\ModelLoading.frag">
+    <None Include="Shader\BlinnPhong.frag">
       <DeploymentContent>false</DeploymentContent>
     </None>
-    <None Include="Shader\ModelLoading.vert">
+    <None Include="Shader\BlinnPhong.vert">
       <DeploymentContent>false</DeploymentContent>
     </None>
     <None Include="Shader\ModelMaterial.include" />
+    <None Include="Shader\BlinnPhongCalculations.include" />
     <None Include="Shader\SpotLight.include">
       <DeploymentContent>false</DeploymentContent>
     </None>
@@ -241,9 +242,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Camera.h" />
+    <ClInclude Include="src\DirLight.h" />
     <ClInclude Include="src\Mesh.h" />
     <ClInclude Include="src\Model.h" />
+    <ClInclude Include="src\PointLight.h" />
     <ClInclude Include="src\Shader.h" />
+    <ClInclude Include="src\SpotLight.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
