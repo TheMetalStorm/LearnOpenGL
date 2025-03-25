@@ -59,6 +59,8 @@ public:
         Pitch = pitch;
         updateCameraVectors();
     }
+    
+    virtual ~Camera() = default;
 
     // returns the view matrix calculated using Euler Angles and the LookAt Matrix
     glm::mat4 GetViewMatrix()
@@ -71,22 +73,28 @@ public:
     }
 
     // processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
-    void ProcessKeyboard(Camera_Movement direction, float deltaTime)
+    virtual void ProcessKeyboard(Camera_Movement direction, float deltaTime)
     {
         SetMovementSpeed();
         float velocity = MovementSpeed * deltaTime;
-        if (direction == FORWARD)
-            Position += Front * velocity;
-        if (direction == BACKWARD)
-            Position -= Front * velocity;
-        if (direction == LEFT)
-            Position -= Right * velocity;
-        if (direction == RIGHT)
-            Position += Right * velocity;
+        switch (direction) {
+            case FORWARD:
+                Position += Front * velocity;
+                break;
+            case BACKWARD:
+                Position -= Front * velocity;
+                break;
+            case LEFT:
+                Position -= Right * velocity;
+                break;
+            case RIGHT:
+                Position += Right * velocity;
+                break;
+        }
     }
 
     // processes input received from a mouse input system. Expects the offset value in both the x and y direction.
-    void ProcessMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch = true)
+    virtual void ProcessMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch = true)
     {
         xoffset *= MouseSensitivity;
         yoffset *= MouseSensitivity;
@@ -108,7 +116,7 @@ public:
     }
 
     // processes input received from a mouse scroll-wheel event. Only requires input on the vertical wheel-axis
-    void ProcessMouseScroll(float yoffset)
+    virtual void ProcessMouseScroll(float yoffset)
     {
         Zoom -= (float)yoffset;
         if (Zoom < 1.0f)
@@ -117,7 +125,7 @@ public:
             Zoom = 45.0f;
     }
 
-private:
+protected:
     // calculates the front vector from the Camera's (updated) Euler Angles
     void updateCameraVectors()
     {
