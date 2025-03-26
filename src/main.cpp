@@ -1,3 +1,5 @@
+import fps_cam;
+
 #include <iostream>
 
 #include <glm/glm.hpp>
@@ -11,11 +13,11 @@
 #include <imgui_impl_opengl3.h>
 
 #include "Shader.h"
-#include "FPSCam.h"
 #include "Model.h"
 #include "DirLight.h"
 #include "SpotLight.h"
 #include "PointLight.h"
+
 
 unsigned int loadTexture(const char* path);
 
@@ -24,7 +26,7 @@ unsigned int loadTexture(const char* path);
 const unsigned int SCR_WIDTH = 1920;
 const unsigned int SCR_HEIGHT = 1080;
 
-FPSCam *camera = new FPSCam(glm::vec3(0.0f, 0.0f, 3.0f));
+fps_cam::FPSCam fpsCam(glm::vec3(0.0f, 0.0f, 3.0f));
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
@@ -85,16 +87,16 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 
 	if (DEBUG) return;
 
-	camera->moveFast = (key == GLFW_KEY_LEFT_SHIFT && action == GLFW_REPEAT);
+	fpsCam.moveFast = (key == GLFW_KEY_LEFT_SHIFT && action == GLFW_REPEAT);
 
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		camera->ProcessKeyboard(FORWARD, deltaTime);
+		fpsCam.ProcessKeyboard(camera::Camera_Movement::FORWARD, deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		camera->ProcessKeyboard(BACKWARD, deltaTime);
+		fpsCam.ProcessKeyboard(camera::Camera_Movement::BACKWARD, deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		camera->ProcessKeyboard(LEFT, deltaTime);
+		fpsCam.ProcessKeyboard(camera::Camera_Movement::LEFT, deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		camera->ProcessKeyboard(RIGHT, deltaTime);
+		fpsCam.ProcessKeyboard(camera::Camera_Movement::RIGHT, deltaTime);
 	
 	
 
@@ -120,7 +122,7 @@ static void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
 	lastX = xpos;
 	lastY = ypos;
 
-	camera->ProcessMouseMovement(xoffset, yoffset);
+	fpsCam.ProcessMouseMovement(xoffset, yoffset);
 
 	
 }
@@ -128,7 +130,7 @@ static void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
 static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
 	if (DEBUG) return;
 
-	camera->ProcessMouseScroll(yoffset);
+	fpsCam.ProcessMouseScroll(yoffset);
 }
 
 
@@ -205,7 +207,7 @@ int main(int argc, char* argv[]) {
 		lastFrame = currentFrame;
 
 		lightingShader.use();
-		lightingShader.setVec3("viewPos", camera->Position);
+		lightingShader.setVec3("viewPos", fpsCam.Position);
 		lightingShader.setFloat("material.shininess", shininess);
 
 		dirLight.dir = glm::vec3(sin(glfwGetTime()), dirLight.dir.y, cos(glfwGetTime())),
@@ -214,8 +216,8 @@ int main(int argc, char* argv[]) {
 		dirLight.specular = glm::make_vec3(dirLightSpecular);
 		dirLight.sendToShader(lightingShader);
 
-		spotLight.position = camera->Position;
-		spotLight.direction = camera->Front;
+		spotLight.position = fpsCam.Position;
+		spotLight.direction = fpsCam.Front;
 		spotLight.ambient = glm::make_vec3(spotLightAmbient);
 		spotLight.diffuse = glm::make_vec3(spotLightDiffuse);
 		spotLight.specular = glm::make_vec3(spotLightSpecular);
@@ -231,8 +233,8 @@ int main(int argc, char* argv[]) {
 		}
 
 		// view/projection transformations
-		glm::mat4 projection = glm::perspective(glm::radians(camera->Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-		glm::mat4 view = camera->GetViewMatrix();
+		glm::mat4 projection = glm::perspective(glm::radians(fpsCam.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+		glm::mat4 view = fpsCam.GetViewMatrix();
 		lightingShader.setMat4("projection", projection);
 		lightingShader.setMat4("view", view);
 

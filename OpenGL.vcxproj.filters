@@ -47,6 +47,12 @@
     <ClCompile Include="src\ImGui\imgui_widgets.cpp">
       <Filter>Quelldateien\ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="src\Camera.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FPSCam.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader\Texture.vert">
@@ -105,9 +111,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Camera.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="src\Shader.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -124,9 +127,6 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="src\PointLight.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="src\FPSCam.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
