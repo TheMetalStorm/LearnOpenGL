@@ -1,8 +1,11 @@
-#pragma once
+export module spot_light;
 
-#include <glm/glm.hpp>
+import shader;
 
-#include "Shader.h"
+import "glm/glm.hpp";
+
+export namespace spot_light{
+
 class SpotLight {
 
 public:
@@ -34,7 +37,7 @@ public:
 		quadratic(0.032f) {
 	}
 
-	void sendToShader(Shader& shader) const {
+	void sendToShader(shader::Shader& shader) const {
 	
 		shader.setVec3("spotLight.position", position);
 		shader.setVec3("spotLight.direction", direction);
@@ -49,3 +52,4 @@ public:
 	}
 
 };
+}

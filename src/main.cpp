@@ -1,4 +1,9 @@
 import fps_cam;
+import shader;
+import model;
+import dir_light;
+import spot_light;
+import point_light;
 
 #include <iostream>
 
@@ -12,12 +17,16 @@ import fps_cam;
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 
-#include "Shader.h"
-#include "Model.h"
-#include "DirLight.h"
-#include "SpotLight.h"
-#include "PointLight.h"
 
+
+
+
+
+using shader::Shader;
+using model::Model;
+using dir_light::DirLight;
+using spot_light::SpotLight;
+using point_light::PointLight;
 
 unsigned int loadTexture(const char* path);
 
@@ -178,8 +187,8 @@ int main(int argc, char* argv[]) {
 
 
 
-	Shader lightingShader = Shader("Shader/BlinnPhong.vert", "Shader/BlinnPhong.frag");
-	Shader pointLightShader = Shader("Shader/LightCube.vert", "Shader/LightCube.frag");
+	shader::Shader lightingShader = shader::Shader("Shader/BlinnPhong.vert", "Shader/BlinnPhong.frag");
+	shader::Shader pointLightShader = shader::Shader("Shader/LightCube.vert", "Shader/LightCube.frag");
 
 	Model backpack = Model("Resources/backpack/backpack.obj");
 	Model cube = Model("Resources/cube.obj");
