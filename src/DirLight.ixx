@@ -1,8 +1,8 @@
 export module dir_light;
 
-import shader;
-
 import "glm/glm.hpp";
+
+import shader;
 
 export namespace dir_light {
 

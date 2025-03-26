@@ -1,11 +1,10 @@
 export module point_light;
 
-import shader;
-
 import <string>;
 
 import "glm/common.hpp";
 
+import shader;
 export namespace point_light {
 
     class PointLight {

@@ -1,19 +1,16 @@
 export module mesh;
 
-
-import shader;
-
 import <string>;
 import <iostream>;
 import <vector>;
 import <stddef.h>;
 
 import "glad/glad.h" ;
-
 import "glm/glm.hpp";
 import "glm/gtc/matrix_transform.hpp";
 import "glm/gtc/type_ptr.hpp";
 
+import shader;
 
 export namespace mesh {
     struct Vertex {

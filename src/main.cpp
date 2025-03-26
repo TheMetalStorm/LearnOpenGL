@@ -1,25 +1,23 @@
+
+#include <GLFW/glfw3.h>
+
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
+
+import <iostream>;
+
+import "glm/glm.hpp";
+import "glm/gtc/matrix_transform.hpp";
+import "glad/glad.h";
+import "stb_image.h";
+
 import fps_cam;
 import shader;
 import model;
 import dir_light;
 import spot_light;
 import point_light;
-
-#include <iostream>
-
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include "stb_image.h"
-
-#include <imgui.h>
-#include <imgui_impl_glfw.h>
-#include <imgui_impl_opengl3.h>
-
-
-
-
 
 
 using shader::Shader;

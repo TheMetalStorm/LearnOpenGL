@@ -1,8 +1,5 @@
 export module model;
 
-import mesh;
-import shader;
-
 import <vector>;
 import <iostream>;
 
@@ -17,6 +14,10 @@ import "glm/gtc/matrix_transform.hpp";
 import "glm/gtc/type_ptr.hpp";
 
 import "stb_image.h";
+
+import mesh;
+import shader;
+
 
 export namespace model {
 	using mesh::Mesh;

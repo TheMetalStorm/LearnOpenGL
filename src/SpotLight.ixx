@@ -1,8 +1,8 @@
 export module spot_light;
 
-import shader;
-
 import "glm/glm.hpp";
+
+import shader;
 
 export namespace spot_light{
 
