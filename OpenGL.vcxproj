@@ -99,23 +99,78 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;assimp-vc143-mtd.lib;glfw3.lib;zlibstaticd.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)libraries\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;assimp-vc143-mtd.lib;glfw3dll.lib;zlibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)libraries\lib\$(ConfigurationName)</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
       <Command>
       </Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>if not exist "$(OutDir)" mkdir "$(OutDir)"
+      <Command>@echo off
+setlocal enabledelayedexpansion
 
-robocopy "$(ProjectDir)Resources" "$(OutDir)Resources" /E /NFL /NDL /NJH /NJS  
-if %ERRORLEVEL% GEQ 8 exit /b %ERRORLEVEL%
-if %ERRORLEVEL% LEQ 1 exit /b 0
+:: ========================================
+:: RELIABLE POST-BUILD COPY SCRIPT FOR VS2022
+:: ========================================
 
-robocopy "$(ProjectDir)Shader" "$(OutDir)Shader" /E /NFL /NDL /NJH /NJS  
-if %ERRORLEVEL% GEQ 8 exit /b %ERRORLEVEL%
-if %ERRORLEVEL% LEQ 1 exit /b 0</Command>
+:: Debugging - show actual paths being used
+echo ProjectDir: $(ProjectDir)
+echo OutDir: $(OutDir)
+echo ConfigurationName: $(ConfigurationName)
+
+:: Ensure output directory exists
+if not exist "$(OutDir)" mkdir "$(OutDir)"
+
+:: Main copy operations
+call :RobocopyWithRetry "$(ProjectDir)Shader" "$(OutDir)Shader" "Shaders"
+call :RobocopyWithRetry "$(ProjectDir)Resources" "$(OutDir)Resources" "Resources"
+call :RobocopyWithRetry "$(ProjectDir)DLL\$(ConfigurationName)" "$(ProjectDir)bin\$(ConfigurationName)" "DLLs"
+
+echo Post-build copy completed successfully
+exit /b 0
+
+:: ========================================
+:: IMPROVED COPY FUNCTION WITH ERROR HANDLING
+:: ========================================
+:RobocopyWithRetry
+set "_source=%~1"
+set "_dest=%~2"
+set "_name=%~3"
+
+:: Verify source exists
+if not exist "!_source!\" (
+    echo ERROR: Source folder not found: "!_source!" &gt;&amp;2
+    exit /b 1
+)
+
+:: Create destination if needed
+if not exist "!_dest!\" mkdir "!_dest!"
+
+:: Perform copy with retry
+robocopy "!_source!" "!_dest!" /E /NFL /NDL /NJH /NJS /R:1 /W:1 /LOG+:$(OutDir)copy_log.txt
+set _result=!ERRORLEVEL!
+
+:: Success cases
+if !_result! EQU 0 (
+    echo SUCCESS: !_name! - no files needed copying
+    goto :EOF
+)
+if !_result! EQU 1 (
+    echo SUCCESS: !_name! copied successfully
+    goto :EOF
+)
+
+:: Warning cases (2-7)
+if !_result! GEQ 2 if !_result! LEQ 7 (
+    echo WARNING: !_name! copied with minor issues (code !_result!)
+    goto :EOF
+)
+
+:: Error cases (&gt;=8)
+echo ERROR: Failed to copy !_name! from "!_source!" to "!_dest!" (code !_result!) &gt;&amp;2
+type "$(OutDir)copy_log.txt" &gt;&amp;2
+exit /b 1</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -134,23 +189,78 @@ if %ERRORLEVEL% LEQ 1 exit /b 0</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)libraries\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;assimp-vc143-mtd.lib;glfw3.lib;zlibstaticd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)libraries\lib\$(ConfigurationName)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;assimp-vc143-mt.lib;glfw3dll.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
       <Command>
       </Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>if not exist "$(OutDir)" mkdir "$(OutDir)"
+      <Command>@echo off
+setlocal enabledelayedexpansion
 
-robocopy "$(ProjectDir)Resources" "$(OutDir)Resources" /E /NFL /NDL /NJH /NJS  
-if %ERRORLEVEL% GEQ 8 exit /b %ERRORLEVEL%
-if %ERRORLEVEL% LEQ 1 exit /b 0
+:: ========================================
+:: RELIABLE POST-BUILD COPY SCRIPT FOR VS2022
+:: ========================================
 
-robocopy "$(ProjectDir)Shader" "$(OutDir)Shader" /E /NFL /NDL /NJH /NJS  
-if %ERRORLEVEL% GEQ 8 exit /b %ERRORLEVEL%
-if %ERRORLEVEL% LEQ 1 exit /b 0</Command>
+:: Debugging - show actual paths being used
+echo ProjectDir: $(ProjectDir)
+echo OutDir: $(OutDir)
+echo ConfigurationName: $(ConfigurationName)
+
+:: Ensure output directory exists
+if not exist "$(OutDir)" mkdir "$(OutDir)"
+
+:: Main copy operations
+call :RobocopyWithRetry "$(ProjectDir)Shader" "$(OutDir)Shader" "Shaders"
+call :RobocopyWithRetry "$(ProjectDir)Resources" "$(OutDir)Resources" "Resources"
+call :RobocopyWithRetry "$(ProjectDir)DLL\$(ConfigurationName)" "$(ProjectDir)bin\$(ConfigurationName)" "DLLs"
+
+echo Post-build copy completed successfully
+exit /b 0
+
+:: ========================================
+:: IMPROVED COPY FUNCTION WITH ERROR HANDLING
+:: ========================================
+:RobocopyWithRetry
+set "_source=%~1"
+set "_dest=%~2"
+set "_name=%~3"
+
+:: Verify source exists
+if not exist "!_source!\" (
+    echo ERROR: Source folder not found: "!_source!" &gt;&amp;2
+    exit /b 1
+)
+
+:: Create destination if needed
+if not exist "!_dest!\" mkdir "!_dest!"
+
+:: Perform copy with retry
+robocopy "!_source!" "!_dest!" /E /NFL /NDL /NJH /NJS /R:1 /W:1 /LOG+:$(OutDir)copy_log.txt
+set _result=!ERRORLEVEL!
+
+:: Success cases
+if !_result! EQU 0 (
+    echo SUCCESS: !_name! - no files needed copying
+    goto :EOF
+)
+if !_result! EQU 1 (
+    echo SUCCESS: !_name! copied successfully
+    goto :EOF
+)
+
+:: Warning cases (2-7)
+if !_result! GEQ 2 if !_result! LEQ 7 (
+    echo WARNING: !_name! copied with minor issues (code !_result!)
+    goto :EOF
+)
+
+:: Error cases (&gt;=8)
+echo ERROR: Failed to copy !_name! from "!_source!" to "!_dest!" (code !_result!) &gt;&amp;2
+type "$(OutDir)copy_log.txt" &gt;&amp;2
+exit /b 1</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -165,23 +275,78 @@ if %ERRORLEVEL% LEQ 1 exit /b 0</Command>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;assimp-vc143-mtd.lib;glfw3.lib;zlibstaticd.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)libraries\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;assimp-vc143-mtd.lib;glfw3dll.lib;zlibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)libraries\lib\$(ConfigurationName)</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
       <Command>
       </Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>if not exist "$(OutDir)" mkdir "$(OutDir)"
+      <Command>@echo off
+setlocal enabledelayedexpansion
 
-robocopy "$(ProjectDir)Resources" "$(OutDir)Resources" /E /NFL /NDL /NJH /NJS  
-if %ERRORLEVEL% GEQ 8 exit /b %ERRORLEVEL%
-if %ERRORLEVEL% LEQ 1 exit /b 0
+:: ========================================
+:: RELIABLE POST-BUILD COPY SCRIPT FOR VS2022
+:: ========================================
 
-robocopy "$(ProjectDir)Shader" "$(OutDir)Shader" /E /NFL /NDL /NJH /NJS  
-if %ERRORLEVEL% GEQ 8 exit /b %ERRORLEVEL%
-if %ERRORLEVEL% LEQ 1 exit /b 0</Command>
+:: Debugging - show actual paths being used
+echo ProjectDir: $(ProjectDir)
+echo OutDir: $(OutDir)
+echo ConfigurationName: $(ConfigurationName)
+
+:: Ensure output directory exists
+if not exist "$(OutDir)" mkdir "$(OutDir)"
+
+:: Main copy operations
+call :RobocopyWithRetry "$(ProjectDir)Shader" "$(OutDir)Shader" "Shaders"
+call :RobocopyWithRetry "$(ProjectDir)Resources" "$(OutDir)Resources" "Resources"
+call :RobocopyWithRetry "$(ProjectDir)DLL\$(ConfigurationName)" "$(ProjectDir)bin\$(ConfigurationName)" "DLLs"
+
+echo Post-build copy completed successfully
+exit /b 0
+
+:: ========================================
+:: IMPROVED COPY FUNCTION WITH ERROR HANDLING
+:: ========================================
+:RobocopyWithRetry
+set "_source=%~1"
+set "_dest=%~2"
+set "_name=%~3"
+
+:: Verify source exists
+if not exist "!_source!\" (
+    echo ERROR: Source folder not found: "!_source!" &gt;&amp;2
+    exit /b 1
+)
+
+:: Create destination if needed
+if not exist "!_dest!\" mkdir "!_dest!"
+
+:: Perform copy with retry
+robocopy "!_source!" "!_dest!" /E /NFL /NDL /NJH /NJS /R:1 /W:1 /LOG+:$(OutDir)copy_log.txt
+set _result=!ERRORLEVEL!
+
+:: Success cases
+if !_result! EQU 0 (
+    echo SUCCESS: !_name! - no files needed copying
+    goto :EOF
+)
+if !_result! EQU 1 (
+    echo SUCCESS: !_name! copied successfully
+    goto :EOF
+)
+
+:: Warning cases (2-7)
+if !_result! GEQ 2 if !_result! LEQ 7 (
+    echo WARNING: !_name! copied with minor issues (code !_result!)
+    goto :EOF
+)
+
+:: Error cases (&gt;=8)
+echo ERROR: Failed to copy !_name! from "!_source!" to "!_dest!" (code !_result!) &gt;&amp;2
+type "$(OutDir)copy_log.txt" &gt;&amp;2
+exit /b 1</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -200,23 +365,78 @@ if %ERRORLEVEL% LEQ 1 exit /b 0</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)libraries\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;assimp-vc143-mtd.lib;glfw3.lib;zlibstaticd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)libraries\lib\$(ConfigurationName)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;assimp-vc143-mt.lib;glfw3dll.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
       <Command>
       </Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>if not exist "$(OutDir)" mkdir "$(OutDir)"
+      <Command>@echo off
+setlocal enabledelayedexpansion
 
-robocopy "$(ProjectDir)Resources" "$(OutDir)Resources" /E /NFL /NDL /NJH /NJS  
-if %ERRORLEVEL% GEQ 8 exit /b %ERRORLEVEL%
-if %ERRORLEVEL% LEQ 1 exit /b 0
+:: ========================================
+:: RELIABLE POST-BUILD COPY SCRIPT FOR VS2022
+:: ========================================
 
-robocopy "$(ProjectDir)Shader" "$(OutDir)Shader" /E /NFL /NDL /NJH /NJS  
-if %ERRORLEVEL% GEQ 8 exit /b %ERRORLEVEL%
-if %ERRORLEVEL% LEQ 1 exit /b 0</Command>
+:: Debugging - show actual paths being used
+echo ProjectDir: $(ProjectDir)
+echo OutDir: $(OutDir)
+echo ConfigurationName: $(ConfigurationName)
+
+:: Ensure output directory exists
+if not exist "$(OutDir)" mkdir "$(OutDir)"
+
+:: Main copy operations
+call :RobocopyWithRetry "$(ProjectDir)Shader" "$(OutDir)Shader" "Shaders"
+call :RobocopyWithRetry "$(ProjectDir)Resources" "$(OutDir)Resources" "Resources"
+call :RobocopyWithRetry "$(ProjectDir)DLL\$(ConfigurationName)" "$(ProjectDir)bin\$(ConfigurationName)" "DLLs"
+
+echo Post-build copy completed successfully
+exit /b 0
+
+:: ========================================
+:: IMPROVED COPY FUNCTION WITH ERROR HANDLING
+:: ========================================
+:RobocopyWithRetry
+set "_source=%~1"
+set "_dest=%~2"
+set "_name=%~3"
+
+:: Verify source exists
+if not exist "!_source!\" (
+    echo ERROR: Source folder not found: "!_source!" &gt;&amp;2
+    exit /b 1
+)
+
+:: Create destination if needed
+if not exist "!_dest!\" mkdir "!_dest!"
+
+:: Perform copy with retry
+robocopy "!_source!" "!_dest!" /E /NFL /NDL /NJH /NJS /R:1 /W:1 /LOG+:$(OutDir)copy_log.txt
+set _result=!ERRORLEVEL!
+
+:: Success cases
+if !_result! EQU 0 (
+    echo SUCCESS: !_name! - no files needed copying
+    goto :EOF
+)
+if !_result! EQU 1 (
+    echo SUCCESS: !_name! copied successfully
+    goto :EOF
+)
+
+:: Warning cases (2-7)
+if !_result! GEQ 2 if !_result! LEQ 7 (
+    echo WARNING: !_name! copied with minor issues (code !_result!)
+    goto :EOF
+)
+
+:: Error cases (&gt;=8)
+echo ERROR: Failed to copy !_name! from "!_source!" to "!_dest!" (code !_result!) &gt;&amp;2
+type "$(OutDir)copy_log.txt" &gt;&amp;2
+exit /b 1</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
