@@ -47,30 +47,6 @@
     <ClCompile Include="src\ImGui\imgui_widgets.cpp">
       <Filter>Quelldateien\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="src\Camera.ixx">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="src\FPSCam.ixx">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Shader.ixx">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Mesh.ixx">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Model.ixx">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="src\PointLight.ixx">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="src\SpotLight.ixx">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="src\DirLight.ixx">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader\Texture.vert">
@@ -127,5 +103,31 @@
     <None Include="Shader\BlinnPhongCalculations.include">
       <Filter>Shader</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\SpotLight.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Camera.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DirLight.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FPSCam.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Mesh.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Model.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PointLight.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Shader.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

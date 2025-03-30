@@ -1,30 +1,23 @@
 
+
+#include <iostream>
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include "stb_image.h"
 
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 
-import <iostream>;
-
-import "glm/glm.hpp";
-import "glm/gtc/matrix_transform.hpp";
-import "glad/glad.h";
-import "stb_image.h";
-
-import fps_cam;
-import shader;
-import model;
-import dir_light;
-import spot_light;
-import point_light;
-
-
-using shader::Shader;
-using model::Model;
-using dir_light::DirLight;
-using spot_light::SpotLight;
-using point_light::PointLight;
+#include "Shader.h"
+#include "Model.h"
+#include "DirLight.h"
+#include "SpotLight.h"
+#include "PointLight.h"
+#include "FPSCam.h"
 
 unsigned int loadTexture(const char* path);
 
@@ -33,7 +26,7 @@ unsigned int loadTexture(const char* path);
 const unsigned int SCR_WIDTH = 1920;
 const unsigned int SCR_HEIGHT = 1080;
 
-fps_cam::FPSCam fpsCam(glm::vec3(0.0f, 0.0f, 3.0f));
+FPSCam fpsCam(glm::vec3(0.0f, 0.0f, 3.0f));
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
@@ -97,21 +90,21 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 	fpsCam.moveFast = (key == GLFW_KEY_LEFT_SHIFT && action == GLFW_REPEAT);
 
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		fpsCam.ProcessKeyboard(camera::Camera_Movement::FORWARD, deltaTime);
+		fpsCam.ProcessKeyboard(Camera_Movement::FORWARD, deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		fpsCam.ProcessKeyboard(camera::Camera_Movement::BACKWARD, deltaTime);
+		fpsCam.ProcessKeyboard(Camera_Movement::BACKWARD, deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		fpsCam.ProcessKeyboard(camera::Camera_Movement::LEFT, deltaTime);
+		fpsCam.ProcessKeyboard(Camera_Movement::LEFT, deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		fpsCam.ProcessKeyboard(camera::Camera_Movement::RIGHT, deltaTime);
-	
-	
+		fpsCam.ProcessKeyboard(Camera_Movement::RIGHT, deltaTime);
+
+
 
 
 }
 
 static void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
-	if (DEBUG) 
+	if (DEBUG)
 	{
 		lastX = xpos;
 		lastY = ypos;
@@ -131,7 +124,7 @@ static void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
 
 	fpsCam.ProcessMouseMovement(xoffset, yoffset);
 
-	
+
 }
 
 static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
@@ -185,8 +178,8 @@ int main(int argc, char* argv[]) {
 
 
 
-	shader::Shader lightingShader = shader::Shader("Shader/BlinnPhong.vert", "Shader/BlinnPhong.frag");
-	shader::Shader pointLightShader = shader::Shader("Shader/LightCube.vert", "Shader/LightCube.frag");
+	Shader lightingShader = Shader("Shader/BlinnPhong.vert", "Shader/BlinnPhong.frag");
+	Shader pointLightShader = Shader("Shader/LightCube.vert", "Shader/LightCube.frag");
 
 	Model backpack = Model("Resources/backpack/backpack.obj");
 	Model cube = Model("Resources/cube.obj");
@@ -247,13 +240,13 @@ int main(int argc, char* argv[]) {
 
 		// model Transformation
 		glm::mat4 model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f)); 
-		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
 		lightingShader.setMat4("model", model);
 
 		// render the loaded model
 		backpack.Draw(lightingShader);
-		
+
 		pointLightShader.use();
 		pointLightShader.setMat4("projection", projection);
 		pointLightShader.setMat4("view", view);
@@ -271,7 +264,7 @@ int main(int argc, char* argv[]) {
 			cube.Draw(pointLightShader);
 		}
 
-		
+
 
 		//ImGui setup
 		ImGui_ImplOpenGL3_NewFrame();
@@ -280,16 +273,16 @@ int main(int argc, char* argv[]) {
 
 		//ImGui window
 		ImGui::Begin("Light Controls");
-			ImGui::InputFloat("Material Shininess", &shininess);
-			ImGui::InputFloat3("DirLight Ambient", dirLightAmbient);
-			ImGui::InputFloat3("DirLight Diffuse", dirLightDiffuse);
-			ImGui::InputFloat3("DirLight Specular", dirLightSpecular);
-			ImGui::InputFloat3("PointLight Ambient", pointLightAmbient);
-			ImGui::InputFloat3("PointLight Diffuse", pointLightDiffuse);
-			ImGui::InputFloat3("PointLight Specular", pointLightSpecular);
-			ImGui::InputFloat3("SpotLight Ambient", spotLightAmbient);
-			ImGui::InputFloat3("SpotLight Diffuse", spotLightDiffuse);
-			ImGui::InputFloat3("SpotLight Specular", spotLightSpecular);
+		ImGui::InputFloat("Material Shininess", &shininess);
+		ImGui::InputFloat3("DirLight Ambient", dirLightAmbient);
+		ImGui::InputFloat3("DirLight Diffuse", dirLightDiffuse);
+		ImGui::InputFloat3("DirLight Specular", dirLightSpecular);
+		ImGui::InputFloat3("PointLight Ambient", pointLightAmbient);
+		ImGui::InputFloat3("PointLight Diffuse", pointLightDiffuse);
+		ImGui::InputFloat3("PointLight Specular", pointLightSpecular);
+		ImGui::InputFloat3("SpotLight Ambient", spotLightAmbient);
+		ImGui::InputFloat3("SpotLight Diffuse", spotLightDiffuse);
+		ImGui::InputFloat3("SpotLight Specular", spotLightSpecular);
 		ImGui::End();
 
 
@@ -304,7 +297,7 @@ int main(int argc, char* argv[]) {
 	}
 
 	//Cleanup
-	
+
 
 	glBindVertexArray(0);
 
