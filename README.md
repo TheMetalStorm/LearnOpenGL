@@ -1,4 +1,4 @@
-# Build (Windows x64, VS 2022, ISO C++20)
+# Build (Windows x64, VS 2022, C++ 14)
 - Clone Project
 - Open `.sln` File
 - Build Debug or Release x64 
