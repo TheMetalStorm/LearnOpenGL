@@ -365,8 +365,4 @@ FodyWeavers.xsd
 #dont ignore .obj in Ressources since they are Models
 !Resources/**/*.obj
 
-!ThirdParty/bin/Release
-!ThirdParty/bin/Debug
-!ThirdParty/lib/Release
-!ThirdParty/lib/Debug
-
+!ThirdParty/**
