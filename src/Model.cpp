@@ -1,34 +1,21 @@
-#pragma once
+#include "SimiEng/Model.h"
 
-#include <vector>
+namespace SimiEng{
 
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
-#include <glm/glm.hpp>
 
-#include "stb_image.h"
-#include "Mesh.h"
-
-class Model {
-
-public:
-	Model(const char* path) {
+	Model::Model(const char* path) {
 		loadModel(path);
 	}
 
-	void Draw(Shader& shader) {
+	void Model::Draw(Shader& shader) {
 		for (Mesh mesh : meshes)
 		{
 			mesh.Draw(shader);
 		}
 	}
-private:
-	std::vector<Mesh> meshes;
-	std::string directory;
-	std::vector<Texture> textures_loaded;
 
-	void loadModel(std::string path) {
+
+	void Model::loadModel(std::string path) {
 		using std::cout;
 		using std::endl;
 
@@ -46,7 +33,7 @@ private:
 		processNode(scene->mRootNode, scene);
 
 	}
-	void processNode(aiNode* node, const aiScene* scene) {
+	void Model::processNode(aiNode* node, const aiScene* scene) {
 
 		//process Node
 		for (unsigned int i = 0; i < node->mNumMeshes; i++) {
@@ -61,7 +48,7 @@ private:
 		}
 	}
 
-	Mesh processMesh(aiMesh* mesh, const aiScene* scene) {
+	Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene) {
 		using std::vector;
 		vector<Vertex> vertices;
 		vector<unsigned int> indices;
@@ -118,7 +105,7 @@ private:
 		return Mesh(vertices, indices, textures);
 	}
 
-	std::vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type,
+	std::vector<Texture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type,
 		std::string typeName) {
 
 		using std::vector;
@@ -152,7 +139,7 @@ private:
 		return textures;
 	}
 
-	unsigned int TextureFromFile(char const* path, std::string directory)
+	unsigned int Model::TextureFromFile(char const* path, std::string directory)
 	{
 		std::string filename = std::string(path);
 		filename = directory + '/' + filename;

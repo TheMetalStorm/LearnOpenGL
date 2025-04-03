@@ -6,10 +6,10 @@ in vec3 Normal;
 in vec3 FragPos;
 
 
-#include "Shader/ModelMaterial.include"
-#include "Shader/PointLight.include"
-#include "Shader/DirLight.include"
-#include "Shader/SpotLight.include"
+#include "Resources/Shader/ModelMaterial.include"
+#include "Resources/Shader/PointLight.include"
+#include "Resources/Shader/DirLight.include"
+#include "Resources/Shader/SpotLight.include"
 
 uniform Material material;
 uniform DirLight dirLight;
@@ -18,7 +18,7 @@ uniform vec3 viewPos;
 uniform PointLight[NR_POINT_LIGHTS] pointLight;
 uniform SpotLight spotLight;
 
-#include "Shader/BlinnPhongCalculations.include"
+#include "Resources/Shader/BlinnPhongCalculations.include"
 
 void main()
 {    

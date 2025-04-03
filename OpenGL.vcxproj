@@ -77,8 +77,8 @@
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>D:\Dev\OpenGL\OpenGL\libraries\include;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Dev\OpenGL\OpenGL\libraries\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>D:\Dev\LearnOpenGL\ThirdParty\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Dev\LearnOpenGL\ThirdParty\lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -93,14 +93,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)libraries\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)ThirdParty\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>opengl32.lib;assimp-vc143-mtd.lib;glfw3dll.lib;zlibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)libraries\lib\$(ConfigurationName)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)ThirdParty\lib\$(ConfigurationName)</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
       <Command>
@@ -123,9 +123,8 @@ echo ConfigurationName: $(ConfigurationName)
 if not exist "$(OutDir)" mkdir "$(OutDir)"
 
 :: Main copy operations
-call :RobocopyWithRetry "$(ProjectDir)Shader" "$(OutDir)Shader" "Shaders"
 call :RobocopyWithRetry "$(ProjectDir)Resources" "$(OutDir)Resources" "Resources"
-call :RobocopyWithRetry "$(ProjectDir)DLL\$(ConfigurationName)" "$(ProjectDir)bin\$(ConfigurationName)" "DLLs"
+call :RobocopyWithRetry "$(ProjectDir)ThirdParty\bin\$(ConfigurationName)" "$(ProjectDir)bin\$(ConfigurationName)" "DLLs"
 
 echo Post-build copy completed successfully
 exit /b 0
@@ -181,7 +180,7 @@ exit /b 1</Command>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)libraries\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)ThirdParty\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
@@ -189,7 +188,7 @@ exit /b 1</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)libraries\lib\$(ConfigurationName)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)ThirdParty\lib\$(ConfigurationName)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;assimp-vc143-mt.lib;glfw3dll.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
@@ -213,9 +212,8 @@ echo ConfigurationName: $(ConfigurationName)
 if not exist "$(OutDir)" mkdir "$(OutDir)"
 
 :: Main copy operations
-call :RobocopyWithRetry "$(ProjectDir)Shader" "$(OutDir)Shader" "Shaders"
 call :RobocopyWithRetry "$(ProjectDir)Resources" "$(OutDir)Resources" "Resources"
-call :RobocopyWithRetry "$(ProjectDir)DLL\$(ConfigurationName)" "$(ProjectDir)bin\$(ConfigurationName)" "DLLs"
+call :RobocopyWithRetry "$(ProjectDir)ThirdParty\bin\$(ConfigurationName)" "$(ProjectDir)bin\$(ConfigurationName)" "DLLs"
 
 echo Post-build copy completed successfully
 exit /b 0
@@ -269,14 +267,14 @@ exit /b 1</Command>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)libraries\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)ThirdParty\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>opengl32.lib;assimp-vc143-mtd.lib;glfw3dll.lib;zlibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)libraries\lib\$(ConfigurationName)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)ThirdParty\lib\$(ConfigurationName)</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
       <Command>
@@ -299,9 +297,8 @@ echo ConfigurationName: $(ConfigurationName)
 if not exist "$(OutDir)" mkdir "$(OutDir)"
 
 :: Main copy operations
-call :RobocopyWithRetry "$(ProjectDir)Shader" "$(OutDir)Shader" "Shaders"
 call :RobocopyWithRetry "$(ProjectDir)Resources" "$(OutDir)Resources" "Resources"
-call :RobocopyWithRetry "$(ProjectDir)DLL\$(ConfigurationName)" "$(ProjectDir)bin\$(ConfigurationName)" "DLLs"
+call :RobocopyWithRetry "$(ProjectDir)ThirdParty\bin\$(ConfigurationName)" "$(ProjectDir)bin\$(ConfigurationName)" "DLLs"
 
 echo Post-build copy completed successfully
 exit /b 0
@@ -357,7 +354,7 @@ exit /b 1</Command>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)libraries\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)ThirdParty\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
@@ -365,7 +362,7 @@ exit /b 1</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)libraries\lib\$(ConfigurationName)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)ThirdParty\lib\$(ConfigurationName)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;assimp-vc143-mt.lib;glfw3dll.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
@@ -389,9 +386,8 @@ echo ConfigurationName: $(ConfigurationName)
 if not exist "$(OutDir)" mkdir "$(OutDir)"
 
 :: Main copy operations
-call :RobocopyWithRetry "$(ProjectDir)Shader" "$(OutDir)Shader" "Shaders"
 call :RobocopyWithRetry "$(ProjectDir)Resources" "$(OutDir)Resources" "Resources"
-call :RobocopyWithRetry "$(ProjectDir)DLL\$(ConfigurationName)" "$(ProjectDir)bin\$(ConfigurationName)" "DLLs"
+call :RobocopyWithRetry "$(ProjectDir)ThirdParty\bin\$(ConfigurationName)" "$(ProjectDir)bin\$(ConfigurationName)" "DLLs"
 
 echo Post-build copy completed successfully
 exit /b 0
@@ -440,6 +436,9 @@ exit /b 1</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\DirLight.cpp" />
+    <ClCompile Include="src\FPSCam.cpp" />
     <ClCompile Include="src\glad.c" />
     <ClCompile Include="src\ImGui\imgui.cpp" />
     <ClCompile Include="src\ImGui\imgui_demo.cpp">
@@ -454,117 +453,42 @@ exit /b 1</Command>
     <ClCompile Include="src\ImGui\imgui_tables.cpp" />
     <ClCompile Include="src\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Mesh.cpp" />
+    <ClCompile Include="src\Model.cpp" />
+    <ClCompile Include="src\PointLight.cpp" />
+    <ClCompile Include="src\Shader.cpp" />
+    <ClCompile Include="src\SpotLight.cpp" />
     <ClCompile Include="src\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shader\DirLight.include">
-      <DeploymentContent>false</DeploymentContent>
-    </None>
-    <None Include="Shader\DirLighting.frag">
-      <DeploymentContent>false</DeploymentContent>
-    </None>
-    <None Include="Shader\BlinnPhong.frag">
-      <DeploymentContent>false</DeploymentContent>
-    </None>
-    <None Include="Shader\BlinnPhong.vert">
-      <DeploymentContent>false</DeploymentContent>
-    </None>
-    <None Include="Shader\ModelMaterial.include" />
-    <None Include="Shader\BlinnPhongCalculations.include" />
-    <None Include="Shader\SpotLight.include">
-      <DeploymentContent>false</DeploymentContent>
-    </None>
-    <None Include="Shader\Light.include">
-      <DeploymentContent>false</DeploymentContent>
-    </None>
-    <None Include="Shader\LightCube.frag">
-      <DeploymentContent>false</DeploymentContent>
-    </None>
-    <None Include="Shader\LightCube.vert">
-      <DeploymentContent>false</DeploymentContent>
-    </None>
-    <None Include="Shader\PhongShading.frag">
-      <DeploymentContent>false</DeploymentContent>
-    </None>
-    <None Include="Shader\PhongShading.vert">
-      <DeploymentContent>false</DeploymentContent>
-    </None>
-    <None Include="Shader\Material.include">
-      <DeploymentContent>false</DeploymentContent>
-    </None>
-    <None Include="Shader\PointLighting.frag">
-      <DeploymentContent>false</DeploymentContent>
-    </None>
-    <None Include="Shader\PointLight.include">
-      <DeploymentContent>false</DeploymentContent>
-    </None>
-    <None Include="Shader\SpotLighting.frag">
-      <DeploymentContent>false</DeploymentContent>
-    </None>
-    <None Include="Shader\Texture.frag">
-      <DeploymentContent>false</DeploymentContent>
-    </None>
-    <None Include="Shader\Texture.vert">
-      <DeploymentContent>false</DeploymentContent>
-    </None>
+    <ClInclude Include="include\SimiEng\Camera.h" />
+    <ClInclude Include="include\SimiEng\DirLight.h" />
+    <ClInclude Include="include\SimiEng\FPSCam.h" />
+    <ClInclude Include="include\SimiEng\Mesh.h" />
+    <ClInclude Include="include\SimiEng\Model.h" />
+    <ClInclude Include="include\SimiEng\PointLight.h" />
+    <ClInclude Include="include\SimiEng\Shader.h" />
+    <ClInclude Include="include\SimiEng\SpotLight.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Camera.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-      <FileType>CppHeader</FileType>
-    </ClInclude>
-    <ClInclude Include="src\DirLight.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-    </ClInclude>
-    <ClInclude Include="src\FPSCam.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>CppHeader</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="src\Mesh.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="src\Model.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="src\PointLight.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-    </ClInclude>
-    <ClInclude Include="src\Shader.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="src\SpotLight.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-    </ClInclude>
+    <None Include="Resources\Shader\BlinnPhong.frag" />
+    <None Include="Resources\Shader\BlinnPhong.vert" />
+    <None Include="Resources\Shader\BlinnPhongCalculations.include" />
+    <None Include="Resources\Shader\DirLight.include" />
+    <None Include="Resources\Shader\DirLighting.frag" />
+    <None Include="Resources\Shader\Light.include" />
+    <None Include="Resources\Shader\LightCube.frag" />
+    <None Include="Resources\Shader\LightCube.vert" />
+    <None Include="Resources\Shader\Material.include" />
+    <None Include="Resources\Shader\ModelMaterial.include" />
+    <None Include="Resources\Shader\PhongShading.frag" />
+    <None Include="Resources\Shader\PhongShading.vert" />
+    <None Include="Resources\Shader\PointLight.include" />
+    <None Include="Resources\Shader\PointLighting.frag" />
+    <None Include="Resources\Shader\SpotLight.include" />
+    <None Include="Resources\Shader\SpotLighting.frag" />
+    <None Include="Resources\Shader\Texture.frag" />
+    <None Include="Resources\Shader\Texture.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

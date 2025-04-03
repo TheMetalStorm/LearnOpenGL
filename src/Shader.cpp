@@ -1,23 +1,10 @@
-#pragma once
-
-#include <string>
-#include <iostream>
-#include <sstream>
-#include <fstream>
-
-#include <glad/glad.h> 
-
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
+#include "SimiEng/Shader.h"
 
 
-class Shader
-{
-private:
+namespace SimiEng{
 
-	const std::string INCLUDE_PREFIX = "#include ";
-	unsigned int createFragShader(const char* shaderSource) {
+
+		unsigned int Shader::createFragShader(const char* shaderSource) {
 		int success;
 		char infoLog[512];
 		unsigned int  fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -32,7 +19,7 @@ private:
 		return fragmentShader;
 	}
 
-	unsigned int createVertShader(const char* shaderSource) {
+	unsigned int Shader::createVertShader(const char* shaderSource) {
 
 		int success;
 		char infoLog[512];
@@ -51,7 +38,7 @@ private:
 
 	// Inject "#include "<path>" " content into Shader File
 	// Currently not recursive (only resolves #include in input to Shader constructor) and does not check for Circular dependency
-	std::string preprocessGLSLFile(std::string originalCode) {
+	std::string Shader::preprocessGLSLFile(std::string originalCode) {
 
 		std::istringstream f(originalCode);
 		std::ostringstream processedCode;
@@ -77,13 +64,11 @@ private:
 		return processedCode.str();
 	}
 
-public:
-	unsigned int ID;
 
 
 
 
-	Shader(const char* vertexPath, const char* fragmentPath) {
+	Shader::Shader(const char* vertexPath, const char* fragmentPath) {
 		int success;
 		char infoLog[512];
 		//get shader src from file
@@ -123,7 +108,7 @@ public:
 	}
 
 
-	void readFile(const char* path, std::string& code)
+	void Shader::readFile(const char* path, std::string& code)
 	{
 		std::ifstream file;
 		file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
@@ -145,39 +130,39 @@ public:
 		}
 	}
 
-	void use()
+	void Shader::use()
 	{
 		glUseProgram(ID);
 	}
 
-	void setBool(const std::string& name, bool value) const
+	void Shader::setBool(const std::string& name, bool value) const
 	{
 		glUniform1i(glGetUniformLocation(ID, name.c_str()), (int)value);
 	}
 
-	void setInt(const std::string& name, int value) const
+	void Shader::setInt(const std::string& name, int value) const
 	{
 		glUniform1i(glGetUniformLocation(ID, name.c_str()), value);
 	}
-	void setFloat(const std::string& name, float value) const
+	void Shader::setFloat(const std::string& name, float value) const
 	{
 		glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
 	}
-	void setVec4(const std::string& name, float v1, float v2, float v3, float v4) const
+	void Shader::setVec4(const std::string& name, float v1, float v2, float v3, float v4) const
 	{
 		glUniform4f(glGetUniformLocation(ID, name.c_str()), v1, v2, v3, v4);
 	}
 
-	void setVec3(const std::string& name, float v1, float v2, float v3) const
+	void Shader::setVec3(const std::string& name, float v1, float v2, float v3) const
 	{
 		glUniform3f(glGetUniformLocation(ID, name.c_str()), v1, v2, v3);
 	}
-	void setVec3(const std::string& name, glm::vec3 vec) const
+	void Shader::setVec3(const std::string& name, glm::vec3 vec) const
 	{
 		glUniform3fv(glGetUniformLocation(ID, name.c_str()), 1, glm::value_ptr(vec));
 	}
 
-	void setMat4(const std::string& name, glm::mat4 matrix) const
+	void Shader::setMat4(const std::string& name, glm::mat4 matrix) const
 	{
 		glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, glm::value_ptr(matrix));
 	}

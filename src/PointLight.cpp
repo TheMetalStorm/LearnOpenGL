@@ -1,22 +1,7 @@
-#pragma once
+#include "SimiEng/PointLight.h"
 
-#include <glm/common.hpp>
-
-#include "Shader.h"
-
-class PointLight {
-public:
-    glm::vec3 position;
-
-    float constant;
-    float linear;
-    float quadratic;
-
-    glm::vec3 ambient;
-    glm::vec3 diffuse;
-    glm::vec3 specular;
-
-    PointLight()
+namespace SimiEng {
+    PointLight::PointLight()
         : position(glm::vec3(0.0f, 0.0f, 0.0f)),
         constant(1.0f),
         linear(0.09f),
@@ -26,11 +11,11 @@ public:
         specular(glm::vec3(1.0f, 1.0f, 1.0f)) {
     }
 
-    PointLight(glm::vec3 pos, float cons, float lin, float quad, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec)
+    PointLight::PointLight(glm::vec3 pos, float cons, float lin, float quad, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec)
         : position(pos), constant(cons), linear(lin), quadratic(quad), ambient(amb), diffuse(diff), specular(spec) {
     }
 
-    void sendToShader(Shader& shader, int index) const {
+    void PointLight::sendToShader(Shader& shader, int index) const {
         shader.setVec3(std::string("pointLight[").append(std::to_string(index)).append("].position"), position);
         shader.setFloat(std::string("pointLight[").append(std::to_string(index)).append("].constant"), constant);
         shader.setFloat(std::string("pointLight[").append(std::to_string(index)).append("].linear"), linear);

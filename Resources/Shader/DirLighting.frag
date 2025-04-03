@@ -1,7 +1,7 @@
 #version 330 core
 
-#include "Shader/DirLight.include"
-#include "Shader/Material.include"
+#include "Resources/Shader/DirLight.include"
+#include "Resources/Shader/Material.include"
 
 out vec4 FragColor;
 in vec2 TexCoord;

@@ -1,7 +1,7 @@
 #version 330 core
 out vec4 FragColor;
 
-#include "Shader/Light.include"
+#include "Resources/Shader/Light.include"
 
 uniform Light light;
 void main()

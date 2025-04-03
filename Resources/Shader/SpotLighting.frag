@@ -1,7 +1,7 @@
 #version 330 core
 
-#include "Shader/SpotLight.include"
-#include "Shader/Material.include"
+#include "Resources/Shader/SpotLight.include"
+#include "Resources/Shader/Material.include"
 
 out vec4 FragColor;
 in vec2 TexCoord;

@@ -12,12 +12,12 @@
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 
-#include "Shader.h"
-#include "Model.h"
-#include "DirLight.h"
-#include "SpotLight.h"
-#include "PointLight.h"
-#include "FPSCam.h"
+#include "SimiEng/Shader.h"
+#include "SimiEng/Model.h"
+#include "SimiEng/DirLight.h"
+#include "SimiEng/SpotLight.h"
+#include "SimiEng/PointLight.h"
+#include "SimiEng/FPSCam.h"
 
 unsigned int loadTexture(const char* path);
 
@@ -26,7 +26,7 @@ unsigned int loadTexture(const char* path);
 const unsigned int SCR_WIDTH = 1920;
 const unsigned int SCR_HEIGHT = 1080;
 
-FPSCam fpsCam(glm::vec3(0.0f, 0.0f, 3.0f));
+SimiEng::FPSCam fpsCam(glm::vec3(0.0f, 0.0f, 3.0f));
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
@@ -87,16 +87,16 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 
 	if (DEBUG) return;
 
-	fpsCam.moveFast = (key == GLFW_KEY_LEFT_SHIFT && action == GLFW_REPEAT);
+	fpsCam.MoveFast = (key == GLFW_KEY_LEFT_SHIFT && action == GLFW_REPEAT);
 
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		fpsCam.ProcessKeyboard(Camera_Movement::FORWARD, deltaTime);
+		fpsCam.ProcessKeyboard(SimiEng::CameraMovement::FORWARD, deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		fpsCam.ProcessKeyboard(Camera_Movement::BACKWARD, deltaTime);
+		fpsCam.ProcessKeyboard(SimiEng::CameraMovement::BACKWARD, deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		fpsCam.ProcessKeyboard(Camera_Movement::LEFT, deltaTime);
+		fpsCam.ProcessKeyboard(SimiEng::CameraMovement::LEFT, deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		fpsCam.ProcessKeyboard(Camera_Movement::RIGHT, deltaTime);
+		fpsCam.ProcessKeyboard(SimiEng::CameraMovement::RIGHT, deltaTime);
 
 
 
@@ -178,15 +178,15 @@ int main(int argc, char* argv[]) {
 
 
 
-	Shader lightingShader = Shader("Shader/BlinnPhong.vert", "Shader/BlinnPhong.frag");
-	Shader pointLightShader = Shader("Shader/LightCube.vert", "Shader/LightCube.frag");
+	SimiEng::Shader lightingShader("Resources/Shader/BlinnPhong.vert", "Resources/Shader/BlinnPhong.frag");
+	SimiEng::Shader pointLightShader("Resources/Shader/LightCube.vert", "Resources/Shader/LightCube.frag");
 
-	Model backpack = Model("Resources/backpack/backpack.obj");
-	Model cube = Model("Resources/cube.obj");
+	SimiEng::Model backpack("Resources/backpack/backpack.obj");
+	SimiEng::Model cube("Resources/cube.obj");
 
-	DirLight dirLight;
-	SpotLight spotLight;
-	PointLight pointLights[std::size(pointLightPositions)];
+	SimiEng::DirLight dirLight;
+	SimiEng::SpotLight spotLight;
+	SimiEng::PointLight pointLights[std::size(pointLightPositions)];
 
 	while (!glfwWindowShouldClose(window))
 	{

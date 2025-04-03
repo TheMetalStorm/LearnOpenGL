@@ -1,19 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Headerdateien">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Shader">
-      <UniqueIdentifier>{2de0b6db-0de5-43ee-8e62-95ec48b3b008}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Quelldateien">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="Quelldateien\ImGui">
       <UniqueIdentifier>{265b7079-86af-4281-8ece-9287309c359d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{b0a8ce56-8689-4464-9a35-007bcf9549b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -47,87 +47,111 @@
     <ClCompile Include="src\ImGui\imgui_widgets.cpp">
       <Filter>Quelldateien\ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="src\Camera.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FPSCam.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DirLight.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Mesh.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Model.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PointLight.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Shader.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SpotLight.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shader\Texture.vert">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="Shader\Texture.frag">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="Shader\LightCube.frag">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="Shader\LightCube.vert">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="Shader\PhongShading.frag">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="Shader\PhongShading.vert">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="Shader\Light.include">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="Shader\Material.include">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="Shader\DirLight.include">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="Shader\PointLight.include">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="Shader\SpotLight.include">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="Shader\DirLighting.frag">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="Shader\PointLighting.frag">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="Shader\SpotLighting.frag">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="Shader\BlinnPhong.frag">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="Shader\BlinnPhong.vert">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="Shader\ModelMaterial.include">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="Shader\BlinnPhongCalculations.include">
-      <Filter>Shader</Filter>
-    </None>
+    <ClInclude Include="include\SimiEng\Camera.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SimiEng\FPSCam.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SimiEng\DirLight.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SimiEng\Mesh.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SimiEng\Model.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SimiEng\PointLight.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SimiEng\Shader.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SimiEng\SpotLight.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\SpotLight.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Camera.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="src\DirLight.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="src\FPSCam.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Mesh.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Model.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="src\PointLight.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Shader.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
+    <None Include="Resources\Shader\BlinnPhong.vert">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Resources\Shader\BlinnPhongCalculations.include">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Resources\Shader\DirLight.include">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Resources\Shader\DirLighting.frag">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Resources\Shader\Light.include">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Resources\Shader\LightCube.frag">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Resources\Shader\LightCube.vert">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Resources\Shader\Material.include">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Resources\Shader\ModelMaterial.include">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Resources\Shader\PhongShading.frag">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Resources\Shader\PhongShading.vert">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Resources\Shader\PointLight.include">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Resources\Shader\PointLighting.frag">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Resources\Shader\SpotLight.include">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Resources\Shader\SpotLighting.frag">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Resources\Shader\Texture.frag">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Resources\Shader\Texture.vert">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Resources\Shader\BlinnPhong.frag">
+      <Filter>Shader</Filter>
+    </None>
   </ItemGroup>
 </Project>
