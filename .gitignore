@@ -363,7 +363,7 @@ MigrationBackup/
 FodyWeavers.xsd
 
 #dont ignore .obj in Ressources since they are Models
-!Ressources/**/*.obj
+!Resources/**/*.obj
 
 !DLL/Release
 !DLL/Debug
