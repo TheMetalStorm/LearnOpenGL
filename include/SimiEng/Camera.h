@@ -1,13 +1,10 @@
 #pragma once
 
-//#ifdef SIMIENG_DLL_EXPORT
-//#define SIMIENG_API __declspec(dllexport)  // Building the DLL
-//#else
-//#define SIMIENG_API __declspec(dllimport)  // Using the DLL
-//#endif
-
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+
+#include "SimiEng/SimiEng.h"
+
 namespace SimiEng
 {
     // Defines several possible options for camera movement. Used as abstraction to stay away from window-system specific input methods
@@ -30,7 +27,7 @@ namespace SimiEng
 
 
     // An abstract camera class that processes input and calculates the corresponding Euler Angles, Vectors and Matrices for use in OpenGL
-    class /*SIMIENG_API */Camera
+    class SIMIENG_API Camera
     {
     public:
          

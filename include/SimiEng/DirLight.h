@@ -2,10 +2,11 @@
 
 #include <glm/glm.hpp>
 
+#include "SimiEng/SimiEng.h"
 #include "SimiEng/Shader.h"
 
 namespace SimiEng{
-class DirLight {
+class SIMIENG_API DirLight {
 
 public:
     glm::vec3 dir, ambient, diffuse, specular;

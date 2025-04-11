@@ -2,9 +2,11 @@
 #include <iostream>
 
 #include "SimiEng/Camera.h"
+#include "SimiEng/SimiEng.h"
+
 namespace SimiEng
 {
-    class /*SIMIENG_API*/ FPSCam : public SimiEng::Camera {
+    class SIMIENG_API FPSCam : public SimiEng::Camera {
     public:
         using Camera::Camera;
         void ProcessMouseScroll(float yoffset) override;

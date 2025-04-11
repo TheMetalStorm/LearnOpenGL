@@ -3,8 +3,10 @@
 #include <glm/glm.hpp>
 
 #include "SimiEng/Shader.h"
+#include "SimiEng/SimiEng.h"
+
 namespace SimiEng {
-	class SpotLight {
+	class SIMIENG_API SpotLight {
 
 	public:
 

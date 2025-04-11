@@ -3,8 +3,11 @@
 #include <glm/common.hpp>
 
 #include "SimiEng/Shader.h"
+#include "SimiEng/SimiEng.h"
+
+
 namespace SimiEng {
-    class PointLight {
+    class SIMIENG_API PointLight {
     public:
         glm::vec3 position;
 

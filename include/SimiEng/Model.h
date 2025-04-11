@@ -9,9 +9,10 @@
 
 #include "stb_image.h"
 #include "SimiEng/Mesh.h"
+#include "SimiEng/SimiEng.h"
 
 namespace SimiEng {
-	class Model {
+	class SIMIENG_API Model {
 
 	public:
 		Model(const char* path);

@@ -11,11 +11,13 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "SimiEng/SimiEng.h"
+
 namespace SimiEng {
-	class Shader
+	class SIMIENG_API Shader
 	{
 	private:
-		const std::string INCLUDE_PREFIX = "#include ";
+		
 
 		unsigned int createFragShader(const char* shaderSource);
 		unsigned int createVertShader(const char* shaderSource);
@@ -26,6 +28,7 @@ namespace SimiEng {
 		std::string preprocessGLSLFile(std::string originalCode);
 
 	public:
+		const std::string INCLUDE_PREFIX = "#include ";
 		unsigned int ID;
 
 		Shader(const char* vertexPath, const char* fragmentPath);

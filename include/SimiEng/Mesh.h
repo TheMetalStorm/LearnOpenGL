@@ -8,15 +8,16 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "SimiEng/Shader.h"
+#include "SimiEng/SimiEng.h"
 
 namespace SimiEng {
-    struct Vertex {
+    struct SIMIENG_API Vertex {
         glm::vec3 Position;
         glm::vec3 Normal;
         glm::vec2 TexCoords;
     };
 
-    struct Texture {
+    struct SIMIENG_API Texture {
 
         unsigned int id;
         std::string type;
@@ -24,7 +25,7 @@ namespace SimiEng {
 
     };
 
-    class Mesh {
+    class SIMIENG_API Mesh {
 
     public:
 
